@@ -28,6 +28,13 @@
         "navigationBarTitleText": "搜索",
         "enablePullDownRefresh": true
       }
+    },
+    {
+      "path": "pages/Login/Login",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "enablePullDownRefresh": false
+      }
     }
   ],
   "tabBar": {
@@ -56,6 +63,13 @@
     "navigationBarTitleText": "",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
+  },
+  // 使用npm安装时，使用以下配置（配置完成后重新编译运行）
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "tui-(.*)": "thorui-uni/lib/thorui/tui-$1/tui-$1.vue"
+    }
   },
   "condition": {
     //模式配置，仅开发期间生效

@@ -476,6 +476,13 @@ export default class Home extends Mixins(VueMixins) {
   }
 
   onReady() {
+    // 加载定义好的方法
+    let loginRes = this.$checkLogin();
+    // 没有登录成功，返回空
+    if (!loginRes) {
+      return;
+    }
+
     //   wx请求获取位置权限
     this.getAuthorize('scope.userLocation')
         .then(() => {

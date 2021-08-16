@@ -26,6 +26,10 @@ export default class VueMixins extends Vue {
     loadMoreStatusEnum = LoadMoreStatusEnum;
     // EventChannel;
 
+    appid = 'wx204f2188a505d169';//你的小程序的APPID
+    secret='559cb80e07cf9063b4ddd82e409dbb7b';//你的小程序的secret
+    js_code='';//wx.login 登录成功后的code
+
     loadMoreStatus = this.loadMoreStatusEnum.more;
     // loadMoreTimer;
 
@@ -90,12 +94,12 @@ export default class VueMixins extends Vue {
     }
 
     onLoad() {
-        // 加载定义好的方法
-        let loginRes = this.$checkLogin();
-        // 没有登录成功，返回空
-        if (!loginRes) {
-            return;
-        }
+        // // 加载定义好的方法
+        // let loginRes = this.$checkLogin();
+        // // 没有登录成功，返回空
+        // if (!loginRes) {
+        //     return;
+        // }
     }
 
     @Watch('spinning')

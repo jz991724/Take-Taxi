@@ -12,27 +12,26 @@
       <view>申请获取以下权限</view>
       <text>获得你的公开信息(昵称，头像、地区等)</text>
     </view>
-    <button class="bottom"
-            type="primary"
-            open-type="getUserInfo"
-            withCredentials="true"
-            lang="zh_CN"
-            @getuserinfo="wxGetUserInfo">授权登录
-    </button>
+        <button class="bottom"
+                type="primary"
+                open-type="getUserInfo"
+                withCredentials="true"
+                lang="zh_CN"
+                @getuserinfo="wxGetUserInfo">授权登录
+        </button>
+
+<!--    <button open-type="getPhoneNumber" @getphonenumber="onGetPhoneNumber">唤起授权</button>-->
   </view>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import {Component, Mixins} from 'vue-property-decorator';
 import VueMixins from '../../mixins/VueMixins.ts';
 
 @Component({
   name: 'Login'
 })
 export default class Login extends Mixins(VueMixins) {
-  appid = '*************';
-  secret = '*************************';
-  code = '';
   sessionKey = '';
   openId = '';
   userInfo = {
@@ -52,17 +51,18 @@ export default class Login extends Mixins(VueMixins) {
     uni.getUserInfo({
       provider: 'weixin',
       success: (infoRes) => {
+        debugger
         console.log(infoRes);
         this.userInfo = infoRes.userInfo;
 
         // 用户信息写入缓存
-        uni.showToast({ title: '登录成功' });
+        uni.showToast({title: '登录成功'});
         uni.setStorageSync('user_id', new Date().toString());
         uni.setStorageSync('user_nm', this.userInfo.nickName);
         uni.setStorageSync('user_fa', this.userInfo.avatarUrl);
         uni.setStorageSync('user_nu', new Date().toString());
 
-        uni.switchTab({ url: '/pages/Home/Home' })
+        uni.switchTab({url: '/pages/Home/Home'})
 
         // 2.提交数据到后台、写入数据库
         // uni.request({
@@ -118,6 +118,7 @@ export default class Login extends Mixins(VueMixins) {
 
   // 登录
   login() {
+    debugger
     // 0. 显示加载的效果
     uni.showLoading({
       title: '登录中...'
@@ -127,30 +128,32 @@ export default class Login extends Mixins(VueMixins) {
     uni.login({
       provider: 'weixin',
       success: loginRes => {
+        debugger
         console.log(loginRes);
-        this.code = loginRes.code;
+        this.js_code = loginRes.code;
         // 2. 将用户登录code传递到后台置换用户SessionKey、OpenId等信息
         uni.request({
-          url:
-              'https://api.weixin.qq.com/sns/jscode2session?appid=' +
-              this.appid +
-              '&secret=' +
-              this.secret +
-              '&js_code=' +
-              this.code +
-              '&grant_type=authorization_code',
+          url: 'https://api.weixin.qq.com/sns/jscode2session',
+          method: 'GET',
+          data: {
+            appid: this.appid, //你的小程序的APPID
+            secret: this.secret, //你的小程序的secret,
+            js_code: this.js_code, //wx.login 登录成功后的code
+            grant_type:'authorization_code'
+          },
           success: codeRes => {
+            debugger
             console.log(codeRes);
             this.openId = codeRes.data.openid;
             this.sessionKey = codeRes.data.session_key;
 
             // 用户信息写入缓存
-            uni.showToast({ title: '登录成功' });
+            uni.showToast({title: '登录成功'});
             uni.setStorageSync('user_id', new Date().toString());
             uni.setStorageSync('user_nm', this.userInfo.nickName);
             uni.setStorageSync('user_fa', this.userInfo.avatarUrl);
             uni.setStorageSync('user_nu', new Date().toString());
-            uni.switchTab({ url: '/pages/Home/Home' });
+            // uni.switchTab({url: '/pages/Home/Home'});
             // 隐藏loading
             uni.hideLoading();
 
@@ -218,9 +221,24 @@ export default class Login extends Mixins(VueMixins) {
     return false;
   }
 
+  onGetPhoneNumber(e) {
+    if (e.detail.errMsg == "getPhoneNumber:fail user deny") {       //用户决绝授权
+      debugger
+      //拒绝授权后弹出一些提示
+
+    } else {      //允许授权
+      debugger
+      console.log(e.detail.encryptedData)
+      e.detail.encryptedData      //加密的用户信息
+      e.detail.iv     //加密算法的初始向量  时要用到
+    }
+  }
+
   onLoad(options) {
+    debugger
     // 接收跳转的参数
     this.pageOption = options;
+    debugger
     //默认加载
     this.login();
   }

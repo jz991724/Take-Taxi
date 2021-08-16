@@ -30,7 +30,8 @@ Vue.prototype.$checkLogin = function () {
         // 使用重定向的方式跳转至登录页面
         // uni.redirectTo({ url: '../login/login?backpage=' + backpage + '&backtype=' + backtype });
         // uni.redirectTo({ url: '../Home/Home' });
-        uni.redirectTo({ url: 'pages/Login/Login' })
+        debugger
+        uni.redirectTo({ url: '../Login/Login' })
         return false;
     }
     // 登录成功、已经登录返回数组 [用户 id, 用户随机码, 用户昵称, 用户表情]
