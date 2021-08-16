@@ -1,0 +1,12 @@
+.cu-item .itemAvatar.data-v-4e7b0aa4 {
+  width: 45px;
+  padding: 0 10px;
+}
+.cu-item .itemContent.data-v-4e7b0aa4 {
+  width: calc(100vw - 65px - 60px);
+}
+.cu-item .itemAction.data-v-4e7b0aa4 {
+  width: 60px;
+  margin: 0 10px;
+}
+

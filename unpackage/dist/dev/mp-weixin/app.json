@@ -1,0 +1,44 @@
+{
+  "pages": [
+    "pages/Home/Home",
+    "pages/Mine/Mine",
+    "pages/Order/Order",
+    "pages/Home/Search/Search"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#007AFF",
+    "borderStyle": "black",
+    "backgroundColor": "#F8F8F8",
+    "list": [
+      {
+        "pagePath": "pages/Home/Home",
+        "iconPath": "static/home_icon.png",
+        "selectedIconPath": "static/home_active_icon.png",
+        "text": "主页"
+      },
+      {
+        "pagePath": "pages/Mine/Mine",
+        "iconPath": "static/mine_icon.png",
+        "selectedIconPath": "static/mine_active_icon.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "需要你的位置"
+    }
+  },
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom"
+  }
+}
