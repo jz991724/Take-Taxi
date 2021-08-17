@@ -4,9 +4,9 @@
     <view class="bg-gradual-green text-center" :style="{height:`${CustomBar+100}px`}">
       <view :style="{top:`${CustomBar+5}px`}" style="position: relative;">
         <view class="cu-avatar lg round"
-              style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big25002.jpg);"></view>
+              :style="getAvatarUrl"></view>
         <view class="padding-sm">
-          <text class="text-cut">坂井泉水</text>
+          <text class="text-cut">{{userInfo.user_nickName}}</text>
         </view>
       </view>
 
@@ -57,6 +57,20 @@ import UniCard from '../../uni_modules/uni-card/components/uni-card/uni-card.vue
   components: { UniCard }
 })
 export default class Mine extends Mixins(VueMixins) {
+  userInfo = {user_avatarUrl: '', user_nickName: ''}
+
+  onReady() {
+    debugger
+    this.userInfo.user_avatarUrl = uni.getStorageSync('user_avatarUrl');
+    this.userInfo.user_nickName = uni.getStorageSync('user_nickName');
+    debugger
+  }
+
+  get getAvatarUrl() {
+    return {
+      backgroundImage: `url(${this.userInfo.user_avatarUrl})`
+    }
+  }
 }
 </script>
 

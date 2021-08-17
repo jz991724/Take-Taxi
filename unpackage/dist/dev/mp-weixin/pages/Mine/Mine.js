@@ -159,7 +159,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(uni) {
 var __extends = this && this.__extends || function () {
   var extendStatics = Object.setPrototypeOf ||
   { __proto__: [] } instanceof Array && function (d, b) {d.__proto__ = b;} ||
@@ -183,8 +183,25 @@ var uni_card_vue_1 = __webpack_require__(/*! ../../uni_modules/uni-card/componen
 var Mine = function (_super) {
   __extends(Mine, _super);
   function Mine() {
-    return _super !== null && _super.apply(this, arguments) || this;
+    var _this = _super !== null && _super.apply(this, arguments) || this;
+    _this.userInfo = { user_avatarUrl: '', user_nickName: '' };
+    return _this;
   }
+  Mine.prototype.onReady = function () {
+    debugger;
+    this.userInfo.user_avatarUrl = uni.getStorageSync('user_avatarUrl');
+    this.userInfo.user_nickName = uni.getStorageSync('user_nickName');
+    debugger;
+  };
+  Object.defineProperty(Mine.prototype, "getAvatarUrl", {
+    get: function get() {
+      return {
+        backgroundImage: "url(" + this.userInfo.user_avatarUrl + ")" };
+
+    },
+    enumerable: true,
+    configurable: true });
+
   Mine = __decorate([
   vue_property_decorator_1.Component({
     name: 'Mine',
@@ -194,6 +211,7 @@ var Mine = function (_super) {
   return Mine;
 }(vue_property_decorator_1.Mixins(VueMixins_1["default"]));
 exports["default"] = Mine;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
