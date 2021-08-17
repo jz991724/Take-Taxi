@@ -113,13 +113,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import {Component, Mixins} from 'vue-property-decorator';
 import VueMixins from '../../mixins/VueMixins.ts';
 import UniIcons from '../../components/uni-icons/uni-icons.vue';
 
 @Component({
   name: 'Home',
-  components: { UniIcons },
+  components: {UniIcons},
 })
 export default class Home extends Mixins(VueMixins) {
   distance = 0; //"距离"
@@ -269,7 +269,7 @@ export default class Home extends Mixins(VueMixins) {
         to,
         success: (res) => {
           let {
-            result: { routes },
+            result: {routes},
             status
           } = res;
           if (status === this.qqMapsSDKStatusEnum.success) {
@@ -393,7 +393,7 @@ export default class Home extends Mixins(VueMixins) {
   }
 
   drawRoutePolyline(targetInfo) {
-    let { location } = targetInfo;
+    let {location} = targetInfo;
     if (location) {
       let {
         lat,
@@ -410,7 +410,7 @@ export default class Home extends Mixins(VueMixins) {
               targetInfo
             })
                 .then(planRoute => {
-                  this.planRoute = { ...this.planRoute, ...planRoute };
+                  this.planRoute = {...this.planRoute, ...planRoute};
                 });
           });
     }
@@ -423,9 +423,9 @@ export default class Home extends Mixins(VueMixins) {
       'duration': 19,
       'traffic_light_count': 11,
       'toll': 0,
-      'restriction': { 'status': 0 },
+      'restriction': {'status': 0},
       'tags': ['LEAST_DISTANCE', '距离短'],
-      'taxi_fare': { 'fare': 0 },
+      'taxi_fare': {'fare': 0},
       'id': '3067554519178194975',
       'title': '同德昆明广场购物中心',
       'address': '云南省昆明市盘龙区金江路与北京路交叉口西南',
@@ -446,9 +446,9 @@ export default class Home extends Mixins(VueMixins) {
       'duration': 19,
       'traffic_light_count': 11,
       'toll': 0,
-      'restriction': { 'status': 0 },
+      'restriction': {'status': 0},
       'tags': ['LEAST_DISTANCE', '距离短'],
-      'taxi_fare': { 'fare': 0 },
+      'taxi_fare': {'fare': 0},
       'id': '3067554519178194975',
       'title': '同德昆明广场购物中心',
       'address': '云南省昆明市盘龙区金江路与北京路交叉口西南',
@@ -465,7 +465,7 @@ export default class Home extends Mixins(VueMixins) {
     });
 
     uni.$on('targetInfo_map', (targetInfo) => {
-      this.planRoute = { ...this.planRoute, ...targetInfo };
+      this.planRoute = {...this.planRoute, ...targetInfo};
       console.log(JSON.stringify('规划线路信息：', this.planRoute));
       this.drawRoutePolyline(targetInfo);
     });
@@ -479,26 +479,25 @@ export default class Home extends Mixins(VueMixins) {
     // 加载定义好的方法
     let loginRes = this.$checkLogin();
     // 没有登录成功，返回空
-    if (!loginRes) {
-      return;
+    if (loginRes) {
+      //   wx请求获取位置权限
+      this.getAuthorize('scope.userLocation')
+          .then(() => {
+            //   同意后获取
+            this.locationCurrentPosition();
+          })
+          .catch(() => {
+            //   不同意给出弹框，再次确认
+            this.openConfirm()
+                .then(() => {
+                  this.locationCurrentPosition();
+                })
+                .catch(() => {
+                  this.rejectGetLocation();
+                });
+          });
     }
 
-    //   wx请求获取位置权限
-    this.getAuthorize('scope.userLocation')
-        .then(() => {
-          //   同意后获取
-          this.locationCurrentPosition();
-        })
-        .catch(() => {
-          //   不同意给出弹框，再次确认
-          this.openConfirm()
-              .then(() => {
-                this.locationCurrentPosition();
-              })
-              .catch(() => {
-                this.rejectGetLocation();
-              });
-        });
   }
 }
 </script>

@@ -23,22 +23,27 @@ App.mpType = 'app';
 Vue.prototype.$checkLogin = function () {
     // 同步获取本地数据（uid、随机码、用户名、头像）
     let user_id = uni.getStorageSync('user_id');
-    let user_nu = uni.getStorageSync('user_nu');
-    let user_nm = uni.getStorageSync('user_nm');
+    let user_nickName = uni.getStorageSync('user_nickName');
+    let user_avatarUrl = uni.getStorageSync('user_avatarUrl');
     let user_fa = uni.getStorageSync('user_fa');
-    if (!(user_id && user_nu && user_fa)) {
+    if (!(user_id && user_nickName && user_avatarUrl)) {
         // 使用重定向的方式跳转至登录页面
         // uni.redirectTo({ url: '../login/login?backpage=' + backpage + '&backtype=' + backtype });
         // uni.redirectTo({ url: '../Home/Home' });
-        debugger
-        uni.redirectTo({ url: '../Login/Login' })
+        uni.redirectTo({
+            url: '../Login/Login', success: (e) => {
+                debugger
+            }, fail: (e) => {
+                debugger
+            }
+        })
         return false;
     }
     // 登录成功、已经登录返回数组 [用户 id, 用户随机码, 用户昵称, 用户表情]
     return {
         user_id,
-        user_nu,
-        user_nm,
+        user_nickName,
+        user_avatarUrl,
         user_fa
     };
 };

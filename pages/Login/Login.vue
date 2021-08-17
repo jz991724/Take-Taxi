@@ -6,7 +6,7 @@
 <template>
   <view>
     <view class="header">
-      <image src="/static/img/public/login-wx.png"></image>
+<!--      <image src="/static/img/public/login-wx.png"></image>-->
     </view>
     <view class="content">
       <view>申请获取以下权限</view>
@@ -58,11 +58,11 @@ export default class Login extends Mixins(VueMixins) {
         // 用户信息写入缓存
         uni.showToast({title: '登录成功'});
         uni.setStorageSync('user_id', new Date().toString());
-        uni.setStorageSync('user_nm', this.userInfo.nickName);
-        uni.setStorageSync('user_fa', this.userInfo.avatarUrl);
+        uni.setStorageSync('user_nickName', this.userInfo.nickName);
+        uni.setStorageSync('user_avatarUrl', this.userInfo.avatarUrl);
         uni.setStorageSync('user_nu', new Date().toString());
 
-        uni.switchTab({url: '/pages/Home/Home'})
+        uni.switchTab({url: '../Home/Home'})
 
         // 2.提交数据到后台、写入数据库
         // uni.request({
@@ -150,10 +150,10 @@ export default class Login extends Mixins(VueMixins) {
             // 用户信息写入缓存
             uni.showToast({title: '登录成功'});
             uni.setStorageSync('user_id', new Date().toString());
-            uni.setStorageSync('user_nm', this.userInfo.nickName);
-            uni.setStorageSync('user_fa', this.userInfo.avatarUrl);
+            uni.setStorageSync('user_nickName', this.userInfo.nickName);
+            uni.setStorageSync('user_avatarUrl', this.userInfo.avatarUrl);
             uni.setStorageSync('user_nu', new Date().toString());
-            // uni.switchTab({url: '/pages/Home/Home'});
+            uni.switchTab({url: '/pages/Home/Home'});
             // 隐藏loading
             uni.hideLoading();
 
@@ -221,26 +221,24 @@ export default class Login extends Mixins(VueMixins) {
     return false;
   }
 
-  onGetPhoneNumber(e) {
-    if (e.detail.errMsg == "getPhoneNumber:fail user deny") {       //用户决绝授权
-      debugger
-      //拒绝授权后弹出一些提示
-
-    } else {      //允许授权
-      debugger
-      console.log(e.detail.encryptedData)
-      e.detail.encryptedData      //加密的用户信息
-      e.detail.iv     //加密算法的初始向量  时要用到
-    }
-  }
+  // onGetPhoneNumber(e) {
+  //   if (e.detail.errMsg == "getPhoneNumber:fail user deny") {       //用户决绝授权
+  //     debugger
+  //     //拒绝授权后弹出一些提示
+  //
+  //   } else {      //允许授权
+  //     debugger
+  //     console.log(e.detail.encryptedData)
+  //     e.detail.encryptedData      //加密的用户信息
+  //     e.detail.iv     //加密算法的初始向量  时要用到
+  //   }
+  // }
 
   onLoad(options) {
-    debugger
     // 接收跳转的参数
     this.pageOption = options;
-    debugger
     //默认加载
-    this.login();
+    // this.login();
   }
 }
 </script>
