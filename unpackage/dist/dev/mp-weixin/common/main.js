@@ -14,7 +14,7 @@ var _store = _interopRequireDefault(__webpack_require__(/*! ./store */ 12));func
 
 _vue.default.prototype.$store = _store.default;
 _vue.default.prototype.$qqmapsdk = new _qqmapWxJssdk.default({
-  key: 'KC7BZ-ZPH3D-FDW4E-P3YJB-OYAQQ-M6BBY' });var cuCustom = function cuCustom() {__webpack_require__.e(/*! require.ensure | colorui/components/cu-custom */ "colorui/components/cu-custom").then((function () {return resolve(__webpack_require__(/*! ./colorui/components/cu-custom.vue */ 68));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+  key: 'KC7BZ-ZPH3D-FDW4E-P3YJB-OYAQQ-M6BBY' });var cuCustom = function cuCustom() {__webpack_require__.e(/*! require.ensure | colorui/components/cu-custom */ "colorui/components/cu-custom").then((function () {return resolve(__webpack_require__(/*! ./colorui/components/cu-custom.vue */ 75));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 
@@ -57,7 +57,8 @@ _vue.default.prototype.$checkLogin = function () {
 
 };
 // 定义一个全局的请求地址
-_vue.default.prototype.apiServer = '';
+_vue.default.prototype.$apiServer = 'http://101.34.73.117:8088';
+uni.setStorageSync('$apiServer', 'http://101.34.73.117:8088');
 
 var app = new _vue.default(_objectSpread({},
 _App.default));

@@ -48,7 +48,8 @@ Vue.prototype.$checkLogin = function () {
     };
 };
 // 定义一个全局的请求地址
-Vue.prototype.apiServer = '';
+Vue.prototype.$apiServer = 'http://101.34.73.117:8088';
+uni.setStorageSync('$apiServer', 'http://101.34.73.117:8088');
 
 const app = new Vue({
     ...App

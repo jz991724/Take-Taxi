@@ -106,10 +106,10 @@ var components
 try {
   components = {
     epxPanel: function() {
-      return __webpack_require__.e(/*! import() | components/epx-panel/epx-panel */ "components/epx-panel/epx-panel").then(__webpack_require__.bind(null, /*! @/components/epx-panel/epx-panel.vue */ 73))
+      return __webpack_require__.e(/*! import() | components/epx-panel/epx-panel */ "components/epx-panel/epx-panel").then(__webpack_require__.bind(null, /*! @/components/epx-panel/epx-panel.vue */ 80))
     },
     uniSearchBar: function() {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar */ "uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue */ 80))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar */ "uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue */ 87))
     },
     uniCard: function() {
       return __webpack_require__.e(/*! import() | uni_modules/uni-card/components/uni-card/uni-card */ "uni_modules/uni-card/components/uni-card/uni-card").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-card/components/uni-card/uni-card.vue */ 39))

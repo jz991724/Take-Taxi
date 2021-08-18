@@ -73,6 +73,7 @@ import {
   Watch
 } from 'vue-property-decorator';
 import VueMixins, {LoadMoreStatusEnum} from '../../mixins/VueMixins';
+import {OrderService} from '../../services'
 
 export enum StatusEnum {
   全部,
@@ -211,10 +212,51 @@ export default class Order extends Mixins(VueMixins) {
     score: 3
   }];
 
+  pagination = {
+    current: 1,
+    pageSize: 10,
+    total: 0,
+    showSizeChanger: true,
+    showLessItems: true,
+    showQuickJumper: true,
+    showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条，总计 ${total} 条`,
+    onChange: (page, pageSize) => {
+      this.pagination.current = page;
+      this.pagination.pageSize = pageSize;
+      // this.getGoodList();
+      this.fetchData();
+    },
+    onShowSizeChange: (current, size) => {
+      this.pagination.current = 1;
+      this.pagination.pageSize = size;
+      // this.getGoodList();
+      this.fetchData();
+    },
+  };
+
   //获取数据
-  fetchData() {
+  fetchData(conditions = {driverPhone: '15808893828'}) {
     if (!this.spinning) {
       this.spinning = true;
+
+      const {
+        pagination: {
+          current,
+          pageSize,
+        },
+      } = this;
+
+      const params = {
+        index: current || 1,
+        size: pageSize || 10,
+        isAsc: true,
+        orderField: undefined,
+      };
+
+      OrderService.fetchOrderList(params, conditions).then((res) => {
+        debugger
+      });
+
       setTimeout(() => {
         let temp = this.activeTabKey === StatusEnum.全部 ? this.allOrders_temp : this.allOrders_temp.filter(({status}) => status === this.activeTabKey);
         this.allOrders = temp || [];
