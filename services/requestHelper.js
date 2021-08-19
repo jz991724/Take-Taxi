@@ -24,7 +24,8 @@ export const requestHelper = {
         return new Promise((resolve, reject) => {
             uni.request({
                 url, //仅为示例，并非真实接口地址。
-                data: {params, ...config},
+                data: params,
+                ...config,
                 method: method,
                 success: (res) => {
                     let {statusCode, data: {result}} = res;
@@ -34,7 +35,7 @@ export const requestHelper = {
                         return reject();
                     }
                 },
-                error: (error) => {
+                fail: (error) => {
                     return reject(error)
                 },
                 complete: () => {

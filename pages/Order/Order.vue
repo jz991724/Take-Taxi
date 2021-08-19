@@ -81,7 +81,7 @@ export enum OrderStatusEnum {
   待接单,
   进行中,
   已结束,
-  全部 = '*'
+  全部 = null
 }
 
 @Component({
@@ -89,11 +89,11 @@ export enum OrderStatusEnum {
 })
 export default class Order extends Mixins(VueMixins) {
   //当前激活的tab
-  activeTabKey = '*';
+  activeTabKey = null;
 
   tabList = [{
     label: '全部',
-    key: '*'
+    key: null
   }, {
     label: '进行中',
     key: OrderStatusEnum.进行中

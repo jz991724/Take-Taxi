@@ -10316,9 +10316,10 @@ var requestHelper = {
       vueContext[spinName] = true;
     }
     return new Promise(function (resolve, reject) {
-      uni.request({
+      uni.request(_objectSpread(_objectSpread({
         url: url, //仅为示例，并非真实接口地址。
-        data: _objectSpread({ params: params }, config),
+        data: params },
+      config), {}, {
         method: method,
         success: function success(res) {var
           statusCode = res.statusCode,result = res.data.result;
@@ -10328,14 +10329,14 @@ var requestHelper = {
             return reject();
           }
         },
-        error: function error(_error) {
-          return reject(_error);
+        fail: function fail(error) {
+          return reject(error);
         },
         complete: function complete() {
           if (vueContext && spinName && vueContext[spinName] !== undefined) {
             vueContext[spinName] = false;
           }
-        } });
+        } }));
 
     });
   } };exports.requestHelper = requestHelper;
