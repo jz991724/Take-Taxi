@@ -8012,9 +8012,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!*************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/pages.json ***!
-  \*************************************************/
+/*!***************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/pages.json ***!
+  \***************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -8155,9 +8155,9 @@ function normalizeComponent (
 
 /***/ }),
 /* 11 */
-/*!**********************************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/static/js/qqmap-wx-jssdk.min.js ***!
-  \**********************************************************************/
+/*!************************************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/static/js/qqmap-wx-jssdk.min.js ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -8165,9 +8165,9 @@ function _classCallCheck(instance, Constructor) {if (!(instance instanceof Const
 
 /***/ }),
 /* 12 */
-/*!*****************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/store/index.js ***!
-  \*****************************************************/
+/*!*******************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/store/index.js ***!
+  \*******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9734,9 +9734,9 @@ exports.mixins = mixins;
 
 /***/ }),
 /* 22 */
-/*!**********************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/mixins/VueMixins.ts ***!
-  \**********************************************************/
+/*!************************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/mixins/VueMixins.ts ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9863,9 +9863,9 @@ exports["default"] = VueMixins;
 /* 26 */,
 /* 27 */,
 /* 28 */
-/*!********************************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/components/uni-icons/icons.js ***!
-  \********************************************************************/
+/*!**********************************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/components/uni-icons/icons.js ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10006,9 +10006,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* 29 */,
 /* 30 */,
 /* 31 */
-/*!**********************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/mixins/MapMixins.ts ***!
-  \**********************************************************/
+/*!************************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/mixins/MapMixins.ts ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10250,9 +10250,9 @@ exports["default"] = MapMixins;
 /* 53 */,
 /* 54 */,
 /* 55 */
-/*!********************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/services/index.js ***!
-  \********************************************************/
+/*!**********************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/services/index.js ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10264,9 +10264,9 @@ var mapApi = new _mapApi.default();exports.mapApi = mapApi;
 
 /***/ }),
 /* 56 */
-/*!********************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/services/order.js ***!
-  \********************************************************/
+/*!**********************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/services/order.js ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10285,9 +10285,9 @@ OrderService;exports.default = _default;
 
 /***/ }),
 /* 57 */
-/*!****************************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/services/requestHelper.js ***!
-  \****************************************************************/
+/*!******************************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/services/requestHelper.js ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10306,15 +10306,16 @@ var requestHelper = {
                        * @returns {Promise<AxiosResponse<T>>}
                        */
   request: function request() {var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';var method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : MethodEnum;var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};var vueContext = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : undefined;var urlParams = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;var spinName = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 'spinning';var config = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : {};
+    if (vueContext && spinName && vueContext[spinName] !== undefined) {
+      vueContext[spinName] = true;
+    }
+
     url = "".concat(uni.getStorageSync('$apiServer')).concat(url);
     if (urlParams) {
       var paramsStr = _qs.default.stringify(urlParams);
       url = "".concat(url, "?").concat(paramsStr);
     }
 
-    if (vueContext && spinName && vueContext[spinName] !== undefined) {
-      vueContext[spinName] = true;
-    }
     return new Promise(function (resolve, reject) {
       uni.request(_objectSpread(_objectSpread({
         url: url, //仅为示例，并非真实接口地址。
@@ -11025,9 +11026,9 @@ module.exports = function (str, opts) {
 
 /***/ }),
 /* 63 */
-/*!*********************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/services/mapApi.js ***!
-  \*********************************************************/
+/*!***********************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/services/mapApi.js ***!
+  \***********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

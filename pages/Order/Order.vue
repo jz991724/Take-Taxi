@@ -17,11 +17,9 @@
     </scroll-view>
 
     <scroll-view scroll-y="true"
-                 :refresher-triggered="spinning"
+                 :refresher-triggered="loading"
                  @refresherpulling="onRefresh"
                  @scrolltolower="onFetchMoreData"
-                 @refresherrestore="onRestore"
-                 @refresherabort="onAbort"
                  :show-scrollbar="true"
                  :refresher-enabled="true"
                  :refresher-threshold="100"
@@ -108,7 +106,10 @@ export default class Order extends Mixins(VueMixins) {
     key: OrderStatusEnum.待接单
   }];
 
+  loading = false;
+
   onRefresh() {
+    console.log('刷新');
     this.fetchData();
   }
 
@@ -129,26 +130,58 @@ export default class Order extends Mixins(VueMixins) {
 
   //当前显示的订单
   allOrders = [];
-  allOrders_temp = [{
-    id: '01',
-    status: OrderStatusEnum.进行中,
-    startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
-    endPoint: '昆明市盘龙区金辰街道办事处',
-    useCardTime: '2021-07-23 10:00:23',
-    useCardType: '标准接机',
-    remark: '安排39座大巴车，9点40准时到达10点出发',
-    score: 4
-  }];
+  // allOrders_temp = [{
+  //   id: '01',
+  //   status: OrderStatusEnum.进行中,
+  //   startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
+  //   endPoint: '昆明市盘龙区金辰街道办事处',
+  //   useCardTime: '2021-07-23 10:00:23',
+  //   useCardType: '标准接机',
+  //   remark: '安排39座大巴车，9点40准时到达10点出发',
+  //   score: 4
+  // }];
 
   pagination = {
     current: 1,
     pageSize: 10,
-    total: 0,
+    // total: 0,
   };
 
   //获取数据
   fetchData(conditions = {driverPhone: '15808893828', status: this.activeTabKey}) {
-    debugger
+    if (this.loading) {
+      return;
+    }
+    this.pagination.current = 1;
+    const {
+      pagination: {
+        current,
+        pageSize,
+      },
+    } = this;
+
+    const params = {
+      index: current || 1,
+      size: pageSize || 10,
+      isAsc: true,
+      orderField: undefined,
+    };
+    this.loading = true;
+
+
+    OrderService.fetchOrderList(params, this, conditions)
+        .then(({items}) => {
+          this.loading = false;
+          this.allOrders = items || [];
+          debugger
+        });
+  }
+
+  //加载更多数据
+  fetchMoreData(conditions = {driverPhone: '15808893828', status: this.activeTabKey}) {
+    this.loadMoreStatus = LoadMoreStatusEnum.more;
+
+    this.pagination.current += 1;
     const {
       pagination: {
         current,
@@ -164,35 +197,17 @@ export default class Order extends Mixins(VueMixins) {
     };
 
     OrderService.fetchOrderList(params, this, conditions)
-        .then((res) => {
-          debugger
+        .then(({items}) => {
+          this.allOrders = [...this.allOrders, ...items];
+          this.loadMoreStatus = LoadMoreStatusEnum.noMore;
         });
 
-    // setTimeout(() => {
-    //   let temp = this.activeTabKey === StatusEnum.全部 ? this.allOrders_temp : this.allOrders_temp.filter(({status}) => status === this.activeTabKey);
-    //   this.allOrders = temp || [];
-    //   this.spinning = false;
-    // }, 500);
-
-  }
-
-  //加载更多数据
-  fetchMoreData() {
-    if (!this.spinning) {
-      this.spinning = true;
-      this.loadMoreStatus = LoadMoreStatusEnum.more;
-      setTimeout(() => {
-        let temp = this.activeTabKey === OrderStatusEnum.全部 ? this.allOrders_temp : this.allOrders_temp.filter(({status}) => status === this.activeTabKey);
-        this.allOrders = [...this.allOrders, ...temp];
-        this.spinning = false;
-        this.loadMoreStatus = LoadMoreStatusEnum.noMore;
-      }, 500);
-    }
   }
 
   @Watch('activeTabKey', {immediate: true})
   handleActiveTabKeyChange(newVal, oldVal) {
     if (newVal !== oldVal) {
+      console.log('切换');
       this.fetchData();
     }
   }

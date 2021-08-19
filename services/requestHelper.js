@@ -12,15 +12,16 @@ export const requestHelper = {
      * @returns {Promise<AxiosResponse<T>>}
      */
     request(url = '', method = MethodEnum, params = {}, vueContext = undefined, urlParams = undefined, spinName = 'spinning', config = {}) {
+        if (vueContext && spinName && vueContext[spinName] !== undefined) {
+            vueContext[spinName] = true;
+        }
+
         url = `${uni.getStorageSync('$apiServer')}${url}`
         if (urlParams) {
             let paramsStr = qs.stringify(urlParams);
             url = `${url}?${paramsStr}`;
         }
 
-        if (vueContext && spinName && vueContext[spinName] !== undefined) {
-            vueContext[spinName] = true;
-        }
         return new Promise((resolve, reject) => {
             uni.request({
                 url, //仅为示例，并非真实接口地址。
