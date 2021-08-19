@@ -189,137 +189,50 @@ exports.__esModule = true;
 var vue_property_decorator_1 = __webpack_require__(/*! vue-property-decorator */ 20);
 var VueMixins_1 = __webpack_require__(/*! ../../mixins/VueMixins */ 22);
 var services_1 = __webpack_require__(/*! ../../services */ 55);
-var StatusEnum;
-(function (StatusEnum) {
-  StatusEnum[StatusEnum["\u5168\u90E8"] = 0] = "\u5168\u90E8";
-  StatusEnum[StatusEnum["\u5B8C\u6210"] = 1] = "\u5B8C\u6210";
-  StatusEnum[StatusEnum["\u672A\u5B8C\u6210"] = 2] = "\u672A\u5B8C\u6210";
-})(StatusEnum = exports.StatusEnum || (exports.StatusEnum = {}));
+var OrderStatusEnum;
+(function (OrderStatusEnum) {
+  OrderStatusEnum[OrderStatusEnum["\u5F85\u6D3E\u5355"] = 0] = "\u5F85\u6D3E\u5355";
+  OrderStatusEnum[OrderStatusEnum["\u5F85\u63A5\u5355"] = 1] = "\u5F85\u63A5\u5355";
+  OrderStatusEnum[OrderStatusEnum["\u8FDB\u884C\u4E2D"] = 2] = "\u8FDB\u884C\u4E2D";
+  OrderStatusEnum[OrderStatusEnum["\u5DF2\u7ED3\u675F"] = 3] = "\u5DF2\u7ED3\u675F";
+  OrderStatusEnum["\u5168\u90E8"] = "*";
+})(OrderStatusEnum = exports.OrderStatusEnum || (exports.OrderStatusEnum = {}));
 var Order = function (_super) {
   __extends(Order, _super);
   function Order() {
     var _this = _super !== null && _super.apply(this, arguments) || this;
-    _this.activeTabKey = StatusEnum.全部;
+    _this.activeTabKey = '*';
     _this.tabList = [{
       label: '全部',
-      key: StatusEnum.全部 },
+      key: '*' },
     {
-      label: '已完成',
-      key: StatusEnum.完成 },
+      label: '进行中',
+      key: OrderStatusEnum.进行中 },
     {
-      label: '未完成',
-      key: StatusEnum.未完成 }];
+      label: '已结束',
+      key: OrderStatusEnum.已结束 },
+    {
+      label: '待派单',
+      key: OrderStatusEnum.待派单 },
+    {
+      label: '待接单',
+      key: OrderStatusEnum.待接单 }];
 
     _this.allOrders = [];
     _this.allOrders_temp = [{
       id: '01',
-      status: StatusEnum.完成,
+      status: OrderStatusEnum.进行中,
       startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
       endPoint: '昆明市盘龙区金辰街道办事处',
       useCardTime: '2021-07-23 10:00:23',
       useCardType: '标准接机',
       remark: '安排39座大巴车，9点40准时到达10点出发',
-      score: 4 },
-    {
-      id: '02',
-      status: StatusEnum.未完成,
-      startPoint: '昆明市盘龙区人民政府',
-      endPoint: '昆明市盘龙区金辰街道办事处',
-      useCardTime: '2021-07-23 10:00:23',
-      useCardType: '标准接机',
-      remark: '安排39座大巴车，9点40准时到达10点出发',
-      score: 3 },
-    {
-      id: '01',
-      status: StatusEnum.完成,
-      startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
-      endPoint: '昆明市盘龙区金辰街道办事处',
-      useCardTime: '2021-07-23 10:00:23',
-      useCardType: '标准接机',
-      remark: '安排39座大巴车，9点40准时到达10点出发',
-      score: 4 },
-    {
-      id: '02',
-      status: StatusEnum.未完成,
-      startPoint: '昆明市盘龙区人民政府',
-      endPoint: '昆明市盘龙区金辰街道办事处',
-      useCardTime: '2021-07-23 10:00:23',
-      useCardType: '标准接机',
-      remark: '安排39座大巴车，9点40准时到达10点出发',
-      score: 3 },
-    {
-      id: '01',
-      status: StatusEnum.完成,
-      startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
-      endPoint: '昆明市盘龙区金辰街道办事处',
-      useCardTime: '2021-07-23 10:00:23',
-      useCardType: '标准接机',
-      remark: '安排39座大巴车，9点40准时到达10点出发',
-      score: 4 },
-    {
-      id: '02',
-      status: StatusEnum.未完成,
-      startPoint: '昆明市盘龙区人民政府',
-      endPoint: '昆明市盘龙区金辰街道办事处',
-      useCardTime: '2021-07-23 10:00:23',
-      useCardType: '标准接机',
-      remark: '安排39座大巴车，9点40准时到达10点出发',
-      score: 3 },
-    {
-      id: '01',
-      status: StatusEnum.完成,
-      startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
-      endPoint: '昆明市盘龙区金辰街道办事处',
-      useCardTime: '2021-07-23 10:00:23',
-      useCardType: '标准接机',
-      remark: '安排39座大巴车，9点40准时到达10点出发',
-      score: 4 },
-    {
-      id: '02',
-      status: StatusEnum.未完成,
-      startPoint: '昆明市盘龙区人民政府',
-      endPoint: '昆明市盘龙区金辰街道办事处',
-      useCardTime: '2021-07-23 10:00:23',
-      useCardType: '标准接机',
-      remark: '安排39座大巴车，9点40准时到达10点出发',
-      score: 3 },
-    {
-      id: '01',
-      status: StatusEnum.完成,
-      startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
-      endPoint: '昆明市盘龙区金辰街道办事处',
-      useCardTime: '2021-07-23 10:00:23',
-      useCardType: '标准接机',
-      remark: '安排39座大巴车，9点40准时到达10点出发',
-      score: 4 },
-    {
-      id: '02',
-      status: StatusEnum.未完成,
-      startPoint: '昆明市盘龙区人民政府',
-      endPoint: '昆明市盘龙区金辰街道办事处',
-      useCardTime: '2021-07-23 10:00:23',
-      useCardType: '标准接机',
-      remark: '安排39座大巴车，9点40准时到达10点出发',
-      score: 3 }];
+      score: 4 }];
 
     _this.pagination = {
       current: 1,
       pageSize: 10,
-      total: 0,
-      showSizeChanger: true,
-      showLessItems: true,
-      showQuickJumper: true,
-      showTotal: function showTotal(total, range) {return "\u7B2C " + range[0] + "-" + range[1] + " \u6761\uFF0C\u603B\u8BA1 " + total + " \u6761";},
-      onChange: function onChange(page, pageSize) {
-        _this.pagination.current = page;
-        _this.pagination.pageSize = pageSize;
-        _this.fetchData();
-      },
-      onShowSizeChange: function onShowSizeChange(current, size) {
-        _this.pagination.current = 1;
-        _this.pagination.pageSize = size;
-        _this.fetchData();
-      } };
+      total: 0 };
 
     return _this;
   }
@@ -338,21 +251,19 @@ var Order = function (_super) {
     this.spinning = false;
   };
   Order.prototype.fetchData = function (conditions) {
-    if (conditions === void 0) {conditions = { driverPhone: '15808893828' };}
-    if (!this.spinning) {
-      this.spinning = true;
-      var _a = this.pagination,current = _a.current,pageSize = _a.pageSize;
-      var params = {
-        index: current || 1,
-        size: pageSize || 10,
-        isAsc: true,
-        orderField: undefined };
+    if (conditions === void 0) {conditions = { driverPhone: '15808893828', status: this.activeTabKey };}
+    debugger;
+    var _a = this.pagination,current = _a.current,pageSize = _a.pageSize;
+    var params = {
+      index: current || 1,
+      size: pageSize || 10,
+      isAsc: true,
+      orderField: undefined };
 
-      services_1.OrderService.fetchOrderList(params, this, conditions).
-      then(function (res) {
-        debugger;
-      });
-    }
+    services_1.OrderService.fetchOrderList(params, this, conditions).
+    then(function (res) {
+      debugger;
+    });
   };
   Order.prototype.fetchMoreData = function () {
     var _this = this;
@@ -360,7 +271,7 @@ var Order = function (_super) {
       this.spinning = true;
       this.loadMoreStatus = VueMixins_1.LoadMoreStatusEnum.more;
       setTimeout(function () {
-        var temp = _this.activeTabKey === StatusEnum.全部 ? _this.allOrders_temp : _this.allOrders_temp.filter(function (_a) {
+        var temp = _this.activeTabKey === OrderStatusEnum.全部 ? _this.allOrders_temp : _this.allOrders_temp.filter(function (_a) {
           var status = _a.status;
           return status === _this.activeTabKey;
         });

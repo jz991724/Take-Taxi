@@ -75,10 +75,13 @@ import {
 import VueMixins, {LoadMoreStatusEnum} from '../../mixins/VueMixins';
 import {OrderService} from '../../services'
 
-export enum StatusEnum {
-  全部,
-  完成,
-  未完成
+// order状态enum
+export enum OrderStatusEnum {
+  待派单,
+  待接单,
+  进行中,
+  已结束,
+  全部 = '*'
 }
 
 @Component({
@@ -86,17 +89,23 @@ export enum StatusEnum {
 })
 export default class Order extends Mixins(VueMixins) {
   //当前激活的tab
-  activeTabKey = StatusEnum.全部;
+  activeTabKey = '*';
 
   tabList = [{
     label: '全部',
-    key: StatusEnum.全部
+    key: '*'
   }, {
-    label: '已完成',
-    key: StatusEnum.完成
+    label: '进行中',
+    key: OrderStatusEnum.进行中
   }, {
-    label: '未完成',
-    key: StatusEnum.未完成
+    label: '已结束',
+    key: OrderStatusEnum.已结束
+  }, {
+    label: '待派单',
+    key: OrderStatusEnum.待派单
+  }, {
+    label: '待接单',
+    key: OrderStatusEnum.待接单
   }];
 
   onRefresh() {
@@ -122,148 +131,49 @@ export default class Order extends Mixins(VueMixins) {
   allOrders = [];
   allOrders_temp = [{
     id: '01',
-    status: StatusEnum.完成,
+    status: OrderStatusEnum.进行中,
     startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
     endPoint: '昆明市盘龙区金辰街道办事处',
     useCardTime: '2021-07-23 10:00:23',
     useCardType: '标准接机',
     remark: '安排39座大巴车，9点40准时到达10点出发',
     score: 4
-  }, {
-    id: '02',
-    status: StatusEnum.未完成,
-    startPoint: '昆明市盘龙区人民政府',
-    endPoint: '昆明市盘龙区金辰街道办事处',
-    useCardTime: '2021-07-23 10:00:23',
-    useCardType: '标准接机',
-    remark: '安排39座大巴车，9点40准时到达10点出发',
-    score: 3
-  }, {
-    id: '01',
-    status: StatusEnum.完成,
-    startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
-    endPoint: '昆明市盘龙区金辰街道办事处',
-    useCardTime: '2021-07-23 10:00:23',
-    useCardType: '标准接机',
-    remark: '安排39座大巴车，9点40准时到达10点出发',
-    score: 4
-  }, {
-    id: '02',
-    status: StatusEnum.未完成,
-    startPoint: '昆明市盘龙区人民政府',
-    endPoint: '昆明市盘龙区金辰街道办事处',
-    useCardTime: '2021-07-23 10:00:23',
-    useCardType: '标准接机',
-    remark: '安排39座大巴车，9点40准时到达10点出发',
-    score: 3
-  }, {
-    id: '01',
-    status: StatusEnum.完成,
-    startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
-    endPoint: '昆明市盘龙区金辰街道办事处',
-    useCardTime: '2021-07-23 10:00:23',
-    useCardType: '标准接机',
-    remark: '安排39座大巴车，9点40准时到达10点出发',
-    score: 4
-  }, {
-    id: '02',
-    status: StatusEnum.未完成,
-    startPoint: '昆明市盘龙区人民政府',
-    endPoint: '昆明市盘龙区金辰街道办事处',
-    useCardTime: '2021-07-23 10:00:23',
-    useCardType: '标准接机',
-    remark: '安排39座大巴车，9点40准时到达10点出发',
-    score: 3
-  }, {
-    id: '01',
-    status: StatusEnum.完成,
-    startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
-    endPoint: '昆明市盘龙区金辰街道办事处',
-    useCardTime: '2021-07-23 10:00:23',
-    useCardType: '标准接机',
-    remark: '安排39座大巴车，9点40准时到达10点出发',
-    score: 4
-  }, {
-    id: '02',
-    status: StatusEnum.未完成,
-    startPoint: '昆明市盘龙区人民政府',
-    endPoint: '昆明市盘龙区金辰街道办事处',
-    useCardTime: '2021-07-23 10:00:23',
-    useCardType: '标准接机',
-    remark: '安排39座大巴车，9点40准时到达10点出发',
-    score: 3
-  }, {
-    id: '01',
-    status: StatusEnum.完成,
-    startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
-    endPoint: '昆明市盘龙区金辰街道办事处',
-    useCardTime: '2021-07-23 10:00:23',
-    useCardType: '标准接机',
-    remark: '安排39座大巴车，9点40准时到达10点出发',
-    score: 4
-  }, {
-    id: '02',
-    status: StatusEnum.未完成,
-    startPoint: '昆明市盘龙区人民政府',
-    endPoint: '昆明市盘龙区金辰街道办事处',
-    useCardTime: '2021-07-23 10:00:23',
-    useCardType: '标准接机',
-    remark: '安排39座大巴车，9点40准时到达10点出发',
-    score: 3
   }];
 
   pagination = {
     current: 1,
     pageSize: 10,
     total: 0,
-    showSizeChanger: true,
-    showLessItems: true,
-    showQuickJumper: true,
-    showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条，总计 ${total} 条`,
-    onChange: (page, pageSize) => {
-      this.pagination.current = page;
-      this.pagination.pageSize = pageSize;
-      // this.getGoodList();
-      this.fetchData();
-    },
-    onShowSizeChange: (current, size) => {
-      this.pagination.current = 1;
-      this.pagination.pageSize = size;
-      // this.getGoodList();
-      this.fetchData();
-    },
   };
 
   //获取数据
-  fetchData(conditions = {driverPhone: '15808893828'}) {
-    if (!this.spinning) {
-      this.spinning = true;
+  fetchData(conditions = {driverPhone: '15808893828', status: this.activeTabKey}) {
+    debugger
+    const {
+      pagination: {
+        current,
+        pageSize,
+      },
+    } = this;
 
-      const {
-        pagination: {
-          current,
-          pageSize,
-        },
-      } = this;
+    const params = {
+      index: current || 1,
+      size: pageSize || 10,
+      isAsc: true,
+      orderField: undefined,
+    };
 
-      const params = {
-        index: current || 1,
-        size: pageSize || 10,
-        isAsc: true,
-        orderField: undefined,
-      };
+    OrderService.fetchOrderList(params, this, conditions)
+        .then((res) => {
+          debugger
+        });
 
-      OrderService.fetchOrderList(params, this, conditions)
-          .then((res) => {
-            debugger
-          });
+    // setTimeout(() => {
+    //   let temp = this.activeTabKey === StatusEnum.全部 ? this.allOrders_temp : this.allOrders_temp.filter(({status}) => status === this.activeTabKey);
+    //   this.allOrders = temp || [];
+    //   this.spinning = false;
+    // }, 500);
 
-      // setTimeout(() => {
-      //   let temp = this.activeTabKey === StatusEnum.全部 ? this.allOrders_temp : this.allOrders_temp.filter(({status}) => status === this.activeTabKey);
-      //   this.allOrders = temp || [];
-      //   this.spinning = false;
-      // }, 500);
-    }
   }
 
   //加载更多数据
@@ -272,7 +182,7 @@ export default class Order extends Mixins(VueMixins) {
       this.spinning = true;
       this.loadMoreStatus = LoadMoreStatusEnum.more;
       setTimeout(() => {
-        let temp = this.activeTabKey === StatusEnum.全部 ? this.allOrders_temp : this.allOrders_temp.filter(({status}) => status === this.activeTabKey);
+        let temp = this.activeTabKey === OrderStatusEnum.全部 ? this.allOrders_temp : this.allOrders_temp.filter(({status}) => status === this.activeTabKey);
         this.allOrders = [...this.allOrders, ...temp];
         this.spinning = false;
         this.loadMoreStatus = LoadMoreStatusEnum.noMore;
