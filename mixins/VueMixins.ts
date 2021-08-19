@@ -20,15 +20,15 @@ export enum LoadMoreStatusEnum {
 export default class VueMixins extends Vue {
     StatusBar: any = this.StatusBar;
     CustomBar: any = this.CustomBar;
-    ScreenHeighta: any = this.ScreenHeight;
+    ScreenHeight: any = this.ScreenHeight;
     ScreenWidth: any = this.ScreenWidth;
     qqMapsSDKStatusEnum = QQMapsSDKStatusEnum;
     loadMoreStatusEnum = LoadMoreStatusEnum;
     // EventChannel;
 
     appid = 'wx204f2188a505d169';//你的小程序的APPID
-    secret='559cb80e07cf9063b4ddd82e409dbb7b';//你的小程序的secret
-    js_code='';//wx.login 登录成功后的code
+    secret = '559cb80e07cf9063b4ddd82e409dbb7b';//你的小程序的secret
+    js_code = '';//wx.login 登录成功后的code
 
     loadMoreStatus = this.loadMoreStatusEnum.more;
     // loadMoreTimer;

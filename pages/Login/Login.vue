@@ -6,21 +6,17 @@
 <template>
   <view>
     <view class="header">
-<!--      <image src="/static/img/public/login-wx.png"></image>-->
+      <!--      <image src="/static/img/public/login-wx.png"></image>-->
     </view>
     <view class="content">
       <view>申请获取以下权限</view>
       <text>获得你的公开信息(昵称，头像、地区等)</text>
     </view>
-        <button class="bottom"
-                type="primary"
-                open-type="getUserInfo"
-                withCredentials="true"
-                lang="zh_CN"
-                @getuserinfo="wxGetUserInfo">授权登录
-        </button>
+    <button class="bottom" type="primary" @tap="wxGetUserInfo">
+      授权登录
+    </button>
 
-<!--    <button open-type="getPhoneNumber" @getphonenumber="onGetPhoneNumber">唤起授权</button>-->
+    <!--    <button open-type="getPhoneNumber" @getphonenumber="onGetPhoneNumber">唤起授权</button>-->
   </view>
 </template>
 
@@ -48,11 +44,11 @@ export default class Login extends Mixins(VueMixins) {
   // 第一授权获取用户信息 ===》按钮触发
   wxGetUserInfo() {
     // 1.获取用户的信息
-    uni.getUserInfo({
-      provider: 'weixin',
+    uni.getUserProfile({
+      desc: '获取你的昵称、头像、地区及性别',
       success: (infoRes) => {
         debugger
-        console.log(infoRes);
+        console.log('登录信息：', infoRes);
         this.userInfo = infoRes.userInfo;
 
         // 用户信息写入缓存
@@ -106,7 +102,8 @@ export default class Login extends Mixins(VueMixins) {
         //   }
         // });
       },
-      fail: () => {
+      fail: (e) => {
+        debugger
         uni.showToast({
           title: '获取用户信息失败',
           icon: 'none'
@@ -139,7 +136,7 @@ export default class Login extends Mixins(VueMixins) {
             appid: this.appid, //你的小程序的APPID
             secret: this.secret, //你的小程序的secret,
             js_code: this.js_code, //wx.login 登录成功后的code
-            grant_type:'authorization_code'
+            grant_type: 'authorization_code'
           },
           success: codeRes => {
             debugger

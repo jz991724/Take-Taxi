@@ -36,8 +36,7 @@
   display: -webkit-flex;
   display: flex;
   overflow: hidden;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;
