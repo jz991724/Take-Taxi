@@ -253,15 +253,16 @@ export default class Order extends Mixins(VueMixins) {
         orderField: undefined,
       };
 
-      OrderService.fetchOrderList(params, conditions).then((res) => {
-        debugger
-      });
+      OrderService.fetchOrderList(params, this, conditions)
+          .then((res) => {
+            debugger
+          });
 
-      setTimeout(() => {
-        let temp = this.activeTabKey === StatusEnum.全部 ? this.allOrders_temp : this.allOrders_temp.filter(({status}) => status === this.activeTabKey);
-        this.allOrders = temp || [];
-        this.spinning = false;
-      }, 500);
+      // setTimeout(() => {
+      //   let temp = this.activeTabKey === StatusEnum.全部 ? this.allOrders_temp : this.allOrders_temp.filter(({status}) => status === this.activeTabKey);
+      //   this.allOrders = temp || [];
+      //   this.spinning = false;
+      // }, 500);
     }
   }
 

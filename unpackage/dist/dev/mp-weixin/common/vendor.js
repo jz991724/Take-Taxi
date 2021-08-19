@@ -876,7 +876,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -3207,225 +3207,689 @@ var index = {
 
 /***/ }),
 
-/***/ 135:
-/*!**********************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/mixins/MapMixins.ts ***!
-  \**********************************************************/
+/***/ 132:
+/*!**************************************!*\
+  !*** ./node_modules/qs/lib/index.js ***!
+  \**************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {
-var __extends = this && this.__extends || function () {
-  var extendStatics = Object.setPrototypeOf ||
-  { __proto__: [] } instanceof Array && function (d, b) {d.__proto__ = b;} ||
-  function (d, b) {for (var p in b) {if (b.hasOwnProperty(p)) d[p] = b[p];}};
-  return function (d, b) {
-    extendStatics(d, b);
-    function __() {this.constructor = d;}
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-var __assign = this && this.__assign || Object.assign || function (t) {
-  for (var s, i = 1, n = arguments.length; i < n; i++) {
-    s = arguments[i];
-    for (var p in s) {if (Object.prototype.hasOwnProperty.call(s, p))
-      t[p] = s[p];}
-  }
-  return t;
+
+
+var stringify = __webpack_require__(/*! ./stringify */ 133);
+var parse = __webpack_require__(/*! ./parse */ 136);
+var formats = __webpack_require__(/*! ./formats */ 135);
+
+module.exports = {
+    formats: formats,
+    parse: parse,
+    stringify: stringify
 };
-var __decorate = this && this.__decorate || function (decorators, target, key, desc) {
-  var c = arguments.length,r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,d;
-  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else
-  for (var i = decorators.length - 1; i >= 0; i--) {if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;}
-  return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-exports.__esModule = true;
-var vue_property_decorator_1 = __webpack_require__(/*! vue-property-decorator */ 20);
-var VueMixins_1 = __webpack_require__(/*! ../mixins/VueMixins */ 22);
-var MapMixins = function (_super) {
-  __extends(MapMixins, _super);
-  function MapMixins() {
-    var _this = _super !== null && _super.apply(this, arguments) || this;
-    _this.distance = 0;
-    _this.latitude = 24;
-    _this.longitude = 102;
-    _this.markers = [];
-    _this.markerHeight = 40;
-    _this.planRoute = {};
-    _this.routePolyline = [];
-    return _this;
-  }
-  MapMixins.prototype.onClearPlanRoute = function () {
-    this.planRoute = {};
-    this.markers = [];
-    this.routePolyline = [];
-  };
-  MapMixins.prototype.getLocation = function () {
-    var _this = this;
-    this.showLoadingToast();
-    return new Promise(function (resolve, reject) {
-      uni.getLocation({
-        type: 'gcj02',
-        success: function success(res) {
-          return resolve(res);
-        },
-        fail: function fail(error) {
-          return reject(error);
-        },
-        complete: function complete() {
-          _this.hideLoadingToast();
-        } });
 
-    });
-  };
-  MapMixins.prototype.drawRoutePolyline = function (targetInfo) {
-    var _this = this;
-    var location = targetInfo.location;
-    if (location) {
-      var lat_1 = location.lat,lng_1 = location.lng;
-      this.getLocation().
-      then(function (from) {
-        _this.routePolylinePlan({
-          from: from,
-          to: {
-            latitude: lat_1,
-            longitude: lng_1 },
 
-          targetInfo: targetInfo }).
+/***/ }),
 
-        then(function (planRoute) {
-          _this.planRoute = __assign({}, _this.planRoute, planRoute);
-        });
-      });
+/***/ 133:
+/*!******************************************!*\
+  !*** ./node_modules/qs/lib/stringify.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./utils */ 134);
+var formats = __webpack_require__(/*! ./formats */ 135);
+
+var arrayPrefixGenerators = {
+    brackets: function brackets(prefix) { // eslint-disable-line func-name-matching
+        return prefix + '[]';
+    },
+    indices: function indices(prefix, key) { // eslint-disable-line func-name-matching
+        return prefix + '[' + key + ']';
+    },
+    repeat: function repeat(prefix) { // eslint-disable-line func-name-matching
+        return prefix;
     }
-  };
-  MapMixins.prototype.getPositionInfoByAddress = function (address) {
-    var _this = this;
-    this.showLoadingToast();
-    return new Promise(function (resolve, reject) {
-      _this.$qqmapsdk.geocoder({
-        address: address,
-        success: function success(res) {
-          var _a = res.result.location,lat = _a.lat,lng = _a.lng,status = res.status;
-          if (status === _this.qqMapsSDKStatusEnum.success) {
-            return resolve({
-              latitude: lat,
-              longitude: lng });
+};
 
-          } else
-          {
-            return reject(false);
-          }
-        },
-        fail: function fail(error) {
-          console.error(error);
-          _this.showErrorToast(error);
-          return reject(error);
-        },
-        complete: function complete(res) {
-          _this.hideLoadingToast();
-          console.log(res);
-        } });
+var toISO = Date.prototype.toISOString;
 
-    });
-  };
-  MapMixins.prototype.routePolylinePlan = function (_a, mode) {
-    var _this = this;
-    var from = _a.from,to = _a.to,targetInfo = _a.targetInfo;
-    if (mode === void 0) {mode = 'driving';}
-    this.markers = [];
-    this.routePolyline = [];
-    this.showLoadingToast();
-    return new Promise(function (resolve, reject) {
-      debugger;
-      _this.$qqmapsdk.direction({
-        mode: mode,
-        from: from,
-        to: to,
-        success: function success(res) {
-          var routes = res.result.routes,status = res.status;
-          if (status === _this.qqMapsSDKStatusEnum.success) {
-            var route = routes[0];
-            var distance = route.distance,duration = route.duration;
-            var coors = route.polyline;
-            var pl = [];
-            var kr = 1000000;
-            for (var i = 2; i < coors.length; i++) {
-              coors[i] = Number(coors[i - 2]) + Number(coors[i]) / kr;
+var defaults = {
+    delimiter: '&',
+    encode: true,
+    encoder: utils.encode,
+    encodeValuesOnly: false,
+    serializeDate: function serializeDate(date) { // eslint-disable-line func-name-matching
+        return toISO.call(date);
+    },
+    skipNulls: false,
+    strictNullHandling: false
+};
+
+var stringify = function stringify( // eslint-disable-line func-name-matching
+    object,
+    prefix,
+    generateArrayPrefix,
+    strictNullHandling,
+    skipNulls,
+    encoder,
+    filter,
+    sort,
+    allowDots,
+    serializeDate,
+    formatter,
+    encodeValuesOnly
+) {
+    var obj = object;
+    if (typeof filter === 'function') {
+        obj = filter(prefix, obj);
+    } else if (obj instanceof Date) {
+        obj = serializeDate(obj);
+    } else if (obj === null) {
+        if (strictNullHandling) {
+            return encoder && !encodeValuesOnly ? encoder(prefix, defaults.encoder) : prefix;
+        }
+
+        obj = '';
+    }
+
+    if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || utils.isBuffer(obj)) {
+        if (encoder) {
+            var keyValue = encodeValuesOnly ? prefix : encoder(prefix, defaults.encoder);
+            return [formatter(keyValue) + '=' + formatter(encoder(obj, defaults.encoder))];
+        }
+        return [formatter(prefix) + '=' + formatter(String(obj))];
+    }
+
+    var values = [];
+
+    if (typeof obj === 'undefined') {
+        return values;
+    }
+
+    var objKeys;
+    if (Array.isArray(filter)) {
+        objKeys = filter;
+    } else {
+        var keys = Object.keys(obj);
+        objKeys = sort ? keys.sort(sort) : keys;
+    }
+
+    for (var i = 0; i < objKeys.length; ++i) {
+        var key = objKeys[i];
+
+        if (skipNulls && obj[key] === null) {
+            continue;
+        }
+
+        if (Array.isArray(obj)) {
+            values = values.concat(stringify(
+                obj[key],
+                generateArrayPrefix(prefix, key),
+                generateArrayPrefix,
+                strictNullHandling,
+                skipNulls,
+                encoder,
+                filter,
+                sort,
+                allowDots,
+                serializeDate,
+                formatter,
+                encodeValuesOnly
+            ));
+        } else {
+            values = values.concat(stringify(
+                obj[key],
+                prefix + (allowDots ? '.' + key : '[' + key + ']'),
+                generateArrayPrefix,
+                strictNullHandling,
+                skipNulls,
+                encoder,
+                filter,
+                sort,
+                allowDots,
+                serializeDate,
+                formatter,
+                encodeValuesOnly
+            ));
+        }
+    }
+
+    return values;
+};
+
+module.exports = function (object, opts) {
+    var obj = object;
+    var options = opts ? utils.assign({}, opts) : {};
+
+    if (options.encoder !== null && options.encoder !== undefined && typeof options.encoder !== 'function') {
+        throw new TypeError('Encoder has to be a function.');
+    }
+
+    var delimiter = typeof options.delimiter === 'undefined' ? defaults.delimiter : options.delimiter;
+    var strictNullHandling = typeof options.strictNullHandling === 'boolean' ? options.strictNullHandling : defaults.strictNullHandling;
+    var skipNulls = typeof options.skipNulls === 'boolean' ? options.skipNulls : defaults.skipNulls;
+    var encode = typeof options.encode === 'boolean' ? options.encode : defaults.encode;
+    var encoder = typeof options.encoder === 'function' ? options.encoder : defaults.encoder;
+    var sort = typeof options.sort === 'function' ? options.sort : null;
+    var allowDots = typeof options.allowDots === 'undefined' ? false : options.allowDots;
+    var serializeDate = typeof options.serializeDate === 'function' ? options.serializeDate : defaults.serializeDate;
+    var encodeValuesOnly = typeof options.encodeValuesOnly === 'boolean' ? options.encodeValuesOnly : defaults.encodeValuesOnly;
+    if (typeof options.format === 'undefined') {
+        options.format = formats['default'];
+    } else if (!Object.prototype.hasOwnProperty.call(formats.formatters, options.format)) {
+        throw new TypeError('Unknown format option provided.');
+    }
+    var formatter = formats.formatters[options.format];
+    var objKeys;
+    var filter;
+
+    if (typeof options.filter === 'function') {
+        filter = options.filter;
+        obj = filter('', obj);
+    } else if (Array.isArray(options.filter)) {
+        filter = options.filter;
+        objKeys = filter;
+    }
+
+    var keys = [];
+
+    if (typeof obj !== 'object' || obj === null) {
+        return '';
+    }
+
+    var arrayFormat;
+    if (options.arrayFormat in arrayPrefixGenerators) {
+        arrayFormat = options.arrayFormat;
+    } else if ('indices' in options) {
+        arrayFormat = options.indices ? 'indices' : 'repeat';
+    } else {
+        arrayFormat = 'indices';
+    }
+
+    var generateArrayPrefix = arrayPrefixGenerators[arrayFormat];
+
+    if (!objKeys) {
+        objKeys = Object.keys(obj);
+    }
+
+    if (sort) {
+        objKeys.sort(sort);
+    }
+
+    for (var i = 0; i < objKeys.length; ++i) {
+        var key = objKeys[i];
+
+        if (skipNulls && obj[key] === null) {
+            continue;
+        }
+
+        keys = keys.concat(stringify(
+            obj[key],
+            key,
+            generateArrayPrefix,
+            strictNullHandling,
+            skipNulls,
+            encode ? encoder : null,
+            filter,
+            sort,
+            allowDots,
+            serializeDate,
+            formatter,
+            encodeValuesOnly
+        ));
+    }
+
+    var joined = keys.join(delimiter);
+    var prefix = options.addQueryPrefix === true ? '?' : '';
+
+    return joined.length > 0 ? prefix + joined : '';
+};
+
+
+/***/ }),
+
+/***/ 134:
+/*!**************************************!*\
+  !*** ./node_modules/qs/lib/utils.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var has = Object.prototype.hasOwnProperty;
+
+var hexTable = (function () {
+    var array = [];
+    for (var i = 0; i < 256; ++i) {
+        array.push('%' + ((i < 16 ? '0' : '') + i.toString(16)).toUpperCase());
+    }
+
+    return array;
+}());
+
+var compactQueue = function compactQueue(queue) {
+    var obj;
+
+    while (queue.length) {
+        var item = queue.pop();
+        obj = item.obj[item.prop];
+
+        if (Array.isArray(obj)) {
+            var compacted = [];
+
+            for (var j = 0; j < obj.length; ++j) {
+                if (typeof obj[j] !== 'undefined') {
+                    compacted.push(obj[j]);
+                }
             }
-            for (var i = 0; i < coors.length; i += 2) {
-              pl.push({
-                latitude: coors[i],
-                longitude: coors[i + 1] });
 
+            item.obj[item.prop] = compacted;
+        }
+    }
+
+    return obj;
+};
+
+var arrayToObject = function arrayToObject(source, options) {
+    var obj = options && options.plainObjects ? Object.create(null) : {};
+    for (var i = 0; i < source.length; ++i) {
+        if (typeof source[i] !== 'undefined') {
+            obj[i] = source[i];
+        }
+    }
+
+    return obj;
+};
+
+var merge = function merge(target, source, options) {
+    if (!source) {
+        return target;
+    }
+
+    if (typeof source !== 'object') {
+        if (Array.isArray(target)) {
+            target.push(source);
+        } else if (typeof target === 'object') {
+            if (options.plainObjects || options.allowPrototypes || !has.call(Object.prototype, source)) {
+                target[source] = true;
             }
-            console.log(pl);
-            var startPoint = pl[0];
-            var endPoint = pl[pl.length - 1];
-            _this.latitude = startPoint.latitude;
-            _this.longitude = startPoint.longitude;
-            _this.markers = [{
-              id: 'startPoint',
-              latitude: startPoint.latitude,
-              longitude: startPoint.longitude,
-              iconPath: '../../static/startPoint_icon.png',
-              width: _this.markerHeight,
-              height: _this.markerHeight },
-            {
-              id: 'endPoint',
-              latitude: endPoint.latitude,
-              longitude: endPoint.longitude,
-              iconPath: '../../static/targetPoint_icon.png',
-              width: _this.markerHeight,
-              height: _this.markerHeight,
-              anchor: {
-                x: 0.5,
-                y: 1 },
+        } else {
+            return [target, source];
+        }
 
-              callout: {
-                content: (targetInfo.title || '') + "\n \u8DDD\u79BB\uFF1A" + (distance || 0) + "\u7C73 | \u7EA6\u9700\u8981" + (duration || 0) + "\u5206\u949F\u5230\n\u5730\u5740\uFF1A" + (targetInfo.address || '') + "\n",
-                color: '#FFFFFF',
-                fontSize: 12,
-                borderRadius: 4,
-                borderWidth: 1,
-                bgColor: '#5e5c5c',
-                padding: '5',
-                display: 'ALWAYS' } }];
+        return target;
+    }
+
+    if (typeof target !== 'object') {
+        return [target].concat(source);
+    }
+
+    var mergeTarget = target;
+    if (Array.isArray(target) && !Array.isArray(source)) {
+        mergeTarget = arrayToObject(target, options);
+    }
+
+    if (Array.isArray(target) && Array.isArray(source)) {
+        source.forEach(function (item, i) {
+            if (has.call(target, i)) {
+                if (target[i] && typeof target[i] === 'object') {
+                    target[i] = merge(target[i], item, options);
+                } else {
+                    target.push(item);
+                }
+            } else {
+                target[i] = item;
+            }
+        });
+        return target;
+    }
+
+    return Object.keys(source).reduce(function (acc, key) {
+        var value = source[key];
+
+        if (has.call(acc, key)) {
+            acc[key] = merge(acc[key], value, options);
+        } else {
+            acc[key] = value;
+        }
+        return acc;
+    }, mergeTarget);
+};
+
+var assign = function assignSingleSource(target, source) {
+    return Object.keys(source).reduce(function (acc, key) {
+        acc[key] = source[key];
+        return acc;
+    }, target);
+};
+
+var decode = function (str) {
+    try {
+        return decodeURIComponent(str.replace(/\+/g, ' '));
+    } catch (e) {
+        return str;
+    }
+};
+
+var encode = function encode(str) {
+    // This code was originally written by Brian White (mscdex) for the io.js core querystring library.
+    // It has been adapted here for stricter adherence to RFC 3986
+    if (str.length === 0) {
+        return str;
+    }
+
+    var string = typeof str === 'string' ? str : String(str);
+
+    var out = '';
+    for (var i = 0; i < string.length; ++i) {
+        var c = string.charCodeAt(i);
+
+        if (
+            c === 0x2D // -
+            || c === 0x2E // .
+            || c === 0x5F // _
+            || c === 0x7E // ~
+            || (c >= 0x30 && c <= 0x39) // 0-9
+            || (c >= 0x41 && c <= 0x5A) // a-z
+            || (c >= 0x61 && c <= 0x7A) // A-Z
+        ) {
+            out += string.charAt(i);
+            continue;
+        }
+
+        if (c < 0x80) {
+            out = out + hexTable[c];
+            continue;
+        }
+
+        if (c < 0x800) {
+            out = out + (hexTable[0xC0 | (c >> 6)] + hexTable[0x80 | (c & 0x3F)]);
+            continue;
+        }
+
+        if (c < 0xD800 || c >= 0xE000) {
+            out = out + (hexTable[0xE0 | (c >> 12)] + hexTable[0x80 | ((c >> 6) & 0x3F)] + hexTable[0x80 | (c & 0x3F)]);
+            continue;
+        }
+
+        i += 1;
+        c = 0x10000 + (((c & 0x3FF) << 10) | (string.charCodeAt(i) & 0x3FF));
+        out += hexTable[0xF0 | (c >> 18)]
+            + hexTable[0x80 | ((c >> 12) & 0x3F)]
+            + hexTable[0x80 | ((c >> 6) & 0x3F)]
+            + hexTable[0x80 | (c & 0x3F)];
+    }
+
+    return out;
+};
+
+var compact = function compact(value) {
+    var queue = [{ obj: { o: value }, prop: 'o' }];
+    var refs = [];
+
+    for (var i = 0; i < queue.length; ++i) {
+        var item = queue[i];
+        var obj = item.obj[item.prop];
+
+        var keys = Object.keys(obj);
+        for (var j = 0; j < keys.length; ++j) {
+            var key = keys[j];
+            var val = obj[key];
+            if (typeof val === 'object' && val !== null && refs.indexOf(val) === -1) {
+                queue.push({ obj: obj, prop: key });
+                refs.push(val);
+            }
+        }
+    }
+
+    return compactQueue(queue);
+};
+
+var isRegExp = function isRegExp(obj) {
+    return Object.prototype.toString.call(obj) === '[object RegExp]';
+};
+
+var isBuffer = function isBuffer(obj) {
+    if (obj === null || typeof obj === 'undefined') {
+        return false;
+    }
+
+    return !!(obj.constructor && obj.constructor.isBuffer && obj.constructor.isBuffer(obj));
+};
+
+module.exports = {
+    arrayToObject: arrayToObject,
+    assign: assign,
+    compact: compact,
+    decode: decode,
+    encode: encode,
+    isBuffer: isBuffer,
+    isRegExp: isRegExp,
+    merge: merge
+};
 
 
-            _this.routePolyline = [{
-              points: pl,
-              arrowLine: true,
-              colorList: ['#FFFFFF', '#2CA756'],
-              width: 6 }];
+/***/ }),
 
-            return resolve(route);
-          } else
-          {
-            return reject(false);
-          }
+/***/ 135:
+/*!****************************************!*\
+  !*** ./node_modules/qs/lib/formats.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var replace = String.prototype.replace;
+var percentTwenties = /%20/g;
+
+module.exports = {
+    'default': 'RFC3986',
+    formatters: {
+        RFC1738: function (value) {
+            return replace.call(value, percentTwenties, '+');
         },
-        fail: function fail(error) {
-          console.error(error);
-          _this.showErrorToast(error);
-          return reject(error);
-        },
-        complete: function complete(res) {
-          _this.hideLoadingToast();
-          console.log(res);
-        } });
+        RFC3986: function (value) {
+            return value;
+        }
+    },
+    RFC1738: 'RFC1738',
+    RFC3986: 'RFC3986'
+};
 
-    });
-  };
-  MapMixins = __decorate([
-  vue_property_decorator_1.Component({ name: 'MapMixins' })],
-  MapMixins);
-  return MapMixins;
-}(vue_property_decorator_1.Mixins(VueMixins_1["default"], vue_property_decorator_1.Vue));
-exports["default"] = MapMixins;
-;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 136:
+/*!**************************************!*\
+  !*** ./node_modules/qs/lib/parse.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./utils */ 134);
+
+var has = Object.prototype.hasOwnProperty;
+
+var defaults = {
+    allowDots: false,
+    allowPrototypes: false,
+    arrayLimit: 20,
+    decoder: utils.decode,
+    delimiter: '&',
+    depth: 5,
+    parameterLimit: 1000,
+    plainObjects: false,
+    strictNullHandling: false
+};
+
+var parseValues = function parseQueryStringValues(str, options) {
+    var obj = {};
+    var cleanStr = options.ignoreQueryPrefix ? str.replace(/^\?/, '') : str;
+    var limit = options.parameterLimit === Infinity ? undefined : options.parameterLimit;
+    var parts = cleanStr.split(options.delimiter, limit);
+
+    for (var i = 0; i < parts.length; ++i) {
+        var part = parts[i];
+
+        var bracketEqualsPos = part.indexOf(']=');
+        var pos = bracketEqualsPos === -1 ? part.indexOf('=') : bracketEqualsPos + 1;
+
+        var key, val;
+        if (pos === -1) {
+            key = options.decoder(part, defaults.decoder);
+            val = options.strictNullHandling ? null : '';
+        } else {
+            key = options.decoder(part.slice(0, pos), defaults.decoder);
+            val = options.decoder(part.slice(pos + 1), defaults.decoder);
+        }
+        if (has.call(obj, key)) {
+            obj[key] = [].concat(obj[key]).concat(val);
+        } else {
+            obj[key] = val;
+        }
+    }
+
+    return obj;
+};
+
+var parseObject = function (chain, val, options) {
+    var leaf = val;
+
+    for (var i = chain.length - 1; i >= 0; --i) {
+        var obj;
+        var root = chain[i];
+
+        if (root === '[]') {
+            obj = [];
+            obj = obj.concat(leaf);
+        } else {
+            obj = options.plainObjects ? Object.create(null) : {};
+            var cleanRoot = root.charAt(0) === '[' && root.charAt(root.length - 1) === ']' ? root.slice(1, -1) : root;
+            var index = parseInt(cleanRoot, 10);
+            if (
+                !isNaN(index)
+                && root !== cleanRoot
+                && String(index) === cleanRoot
+                && index >= 0
+                && (options.parseArrays && index <= options.arrayLimit)
+            ) {
+                obj = [];
+                obj[index] = leaf;
+            } else {
+                obj[cleanRoot] = leaf;
+            }
+        }
+
+        leaf = obj;
+    }
+
+    return leaf;
+};
+
+var parseKeys = function parseQueryStringKeys(givenKey, val, options) {
+    if (!givenKey) {
+        return;
+    }
+
+    // Transform dot notation to bracket notation
+    var key = options.allowDots ? givenKey.replace(/\.([^.[]+)/g, '[$1]') : givenKey;
+
+    // The regex chunks
+
+    var brackets = /(\[[^[\]]*])/;
+    var child = /(\[[^[\]]*])/g;
+
+    // Get the parent
+
+    var segment = brackets.exec(key);
+    var parent = segment ? key.slice(0, segment.index) : key;
+
+    // Stash the parent if it exists
+
+    var keys = [];
+    if (parent) {
+        // If we aren't using plain objects, optionally prefix keys
+        // that would overwrite object prototype properties
+        if (!options.plainObjects && has.call(Object.prototype, parent)) {
+            if (!options.allowPrototypes) {
+                return;
+            }
+        }
+
+        keys.push(parent);
+    }
+
+    // Loop through children appending to the array until we hit depth
+
+    var i = 0;
+    while ((segment = child.exec(key)) !== null && i < options.depth) {
+        i += 1;
+        if (!options.plainObjects && has.call(Object.prototype, segment[1].slice(1, -1))) {
+            if (!options.allowPrototypes) {
+                return;
+            }
+        }
+        keys.push(segment[1]);
+    }
+
+    // If there's a remainder, just add whatever is left
+
+    if (segment) {
+        keys.push('[' + key.slice(segment.index) + ']');
+    }
+
+    return parseObject(keys, val, options);
+};
+
+module.exports = function (str, opts) {
+    var options = opts ? utils.assign({}, opts) : {};
+
+    if (options.decoder !== null && options.decoder !== undefined && typeof options.decoder !== 'function') {
+        throw new TypeError('Decoder has to be a function.');
+    }
+
+    options.ignoreQueryPrefix = options.ignoreQueryPrefix === true;
+    options.delimiter = typeof options.delimiter === 'string' || utils.isRegExp(options.delimiter) ? options.delimiter : defaults.delimiter;
+    options.depth = typeof options.depth === 'number' ? options.depth : defaults.depth;
+    options.arrayLimit = typeof options.arrayLimit === 'number' ? options.arrayLimit : defaults.arrayLimit;
+    options.parseArrays = options.parseArrays !== false;
+    options.decoder = typeof options.decoder === 'function' ? options.decoder : defaults.decoder;
+    options.allowDots = typeof options.allowDots === 'boolean' ? options.allowDots : defaults.allowDots;
+    options.plainObjects = typeof options.plainObjects === 'boolean' ? options.plainObjects : defaults.plainObjects;
+    options.allowPrototypes = typeof options.allowPrototypes === 'boolean' ? options.allowPrototypes : defaults.allowPrototypes;
+    options.parameterLimit = typeof options.parameterLimit === 'number' ? options.parameterLimit : defaults.parameterLimit;
+    options.strictNullHandling = typeof options.strictNullHandling === 'boolean' ? options.strictNullHandling : defaults.strictNullHandling;
+
+    if (str === '' || str === null || typeof str === 'undefined') {
+        return options.plainObjects ? Object.create(null) : {};
+    }
+
+    var tempObj = typeof str === 'string' ? parseValues(str, options) : str;
+    var obj = options.plainObjects ? Object.create(null) : {};
+
+    // Iterate over the keys and setup the new object
+
+    var keys = Object.keys(tempObj);
+    for (var i = 0; i < keys.length; ++i) {
+        var key = keys[i];
+        var newObj = parseKeys(key, tempObj[key], options);
+        obj = utils.merge(obj, newObj, options);
+    }
+
+    return utils.compact(obj);
+};
+
 
 /***/ }),
 
@@ -8956,7 +9420,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -8977,14 +9441,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -9070,7 +9534,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -9949,6 +10413,11 @@ var LoadMoreStatusEnum;
   LoadMoreStatusEnum["loading"] = "\u52A0\u8F7D\u4E2D";
   LoadMoreStatusEnum["noMore"] = "\u6CA1\u6709\u66F4\u591A\u6570\u636E";
 })(LoadMoreStatusEnum = exports.LoadMoreStatusEnum || (exports.LoadMoreStatusEnum = {}));
+var MethodEnum;
+(function (MethodEnum) {
+  MethodEnum["GET"] = "GET";
+  MethodEnum["POST"] = "POST";
+})(MethodEnum = exports.MethodEnum || (exports.MethodEnum = {}));
 var VueMixins = function (_super) {
   __extends(VueMixins, _super);
   function VueMixins() {
@@ -10206,6 +10675,239 @@ module.exports = g;
 /***/ }),
 
 /***/ 31:
+/*!**********************************************************!*\
+  !*** E:/github项目demo/后台管理/Take-Taxi/mixins/MapMixins.ts ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {
+var __extends = this && this.__extends || function () {
+  var extendStatics = Object.setPrototypeOf ||
+  { __proto__: [] } instanceof Array && function (d, b) {d.__proto__ = b;} ||
+  function (d, b) {for (var p in b) {if (b.hasOwnProperty(p)) d[p] = b[p];}};
+  return function (d, b) {
+    extendStatics(d, b);
+    function __() {this.constructor = d;}
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+var __assign = this && this.__assign || Object.assign || function (t) {
+  for (var s, i = 1, n = arguments.length; i < n; i++) {
+    s = arguments[i];
+    for (var p in s) {if (Object.prototype.hasOwnProperty.call(s, p))
+      t[p] = s[p];}
+  }
+  return t;
+};
+var __decorate = this && this.__decorate || function (decorators, target, key, desc) {
+  var c = arguments.length,r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,d;
+  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else
+  for (var i = decorators.length - 1; i >= 0; i--) {if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;}
+  return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+exports.__esModule = true;
+var vue_property_decorator_1 = __webpack_require__(/*! vue-property-decorator */ 20);
+var VueMixins_1 = __webpack_require__(/*! ../mixins/VueMixins */ 22);
+var MapMixins = function (_super) {
+  __extends(MapMixins, _super);
+  function MapMixins() {
+    var _this = _super !== null && _super.apply(this, arguments) || this;
+    _this.distance = 0;
+    _this.latitude = 24;
+    _this.longitude = 102;
+    _this.markers = [];
+    _this.markerHeight = 40;
+    _this.planRoute = {};
+    _this.routePolyline = [];
+    return _this;
+  }
+  MapMixins.prototype.onClearPlanRoute = function () {
+    this.planRoute = {};
+    this.markers = [];
+    this.routePolyline = [];
+  };
+  MapMixins.prototype.getLocation = function () {
+    var _this = this;
+    this.showLoadingToast();
+    return new Promise(function (resolve, reject) {
+      uni.getLocation({
+        type: 'gcj02',
+        success: function success(res) {
+          return resolve(res);
+        },
+        fail: function fail(error) {
+          return reject(error);
+        },
+        complete: function complete() {
+          _this.hideLoadingToast();
+        } });
+
+    });
+  };
+  MapMixins.prototype.drawRoutePolyline = function (targetInfo) {
+    var _this = this;
+    var location = targetInfo.location;
+    if (location) {
+      var lat_1 = location.lat,lng_1 = location.lng;
+      this.getLocation().
+      then(function (from) {
+        _this.routePolylinePlan({
+          from: from,
+          to: {
+            latitude: lat_1,
+            longitude: lng_1 },
+
+          targetInfo: targetInfo }).
+
+        then(function (planRoute) {
+          _this.planRoute = __assign({}, _this.planRoute, planRoute);
+        });
+      });
+    }
+  };
+  MapMixins.prototype.getPositionInfoByAddress = function (address) {
+    var _this = this;
+    this.showLoadingToast();
+    return new Promise(function (resolve, reject) {
+      _this.$qqmapsdk.geocoder({
+        address: address,
+        success: function success(res) {
+          var _a = res.result.location,lat = _a.lat,lng = _a.lng,status = res.status;
+          if (status === _this.qqMapsSDKStatusEnum.success) {
+            return resolve({
+              latitude: lat,
+              longitude: lng });
+
+          } else
+          {
+            return reject(false);
+          }
+        },
+        fail: function fail(error) {
+          console.error(error);
+          _this.showErrorToast(error);
+          return reject(error);
+        },
+        complete: function complete(res) {
+          _this.hideLoadingToast();
+          console.log(res);
+        } });
+
+    });
+  };
+  MapMixins.prototype.routePolylinePlan = function (_a, mode) {
+    var _this = this;
+    var from = _a.from,to = _a.to,targetInfo = _a.targetInfo;
+    if (mode === void 0) {mode = 'driving';}
+    this.markers = [];
+    this.routePolyline = [];
+    this.showLoadingToast();
+    return new Promise(function (resolve, reject) {
+      debugger;
+      _this.$qqmapsdk.direction({
+        mode: mode,
+        from: from,
+        to: to,
+        success: function success(res) {
+          var routes = res.result.routes,status = res.status;
+          if (status === _this.qqMapsSDKStatusEnum.success) {
+            var route = routes[0];
+            var distance = route.distance,duration = route.duration;
+            var coors = route.polyline;
+            var pl = [];
+            var kr = 1000000;
+            for (var i = 2; i < coors.length; i++) {
+              coors[i] = Number(coors[i - 2]) + Number(coors[i]) / kr;
+            }
+            for (var i = 0; i < coors.length; i += 2) {
+              pl.push({
+                latitude: coors[i],
+                longitude: coors[i + 1] });
+
+            }
+            console.log(pl);
+            var startPoint = pl[0];
+            var endPoint = pl[pl.length - 1];
+            _this.latitude = startPoint.latitude;
+            _this.longitude = startPoint.longitude;
+            _this.markers = [{
+              id: 'startPoint',
+              latitude: startPoint.latitude,
+              longitude: startPoint.longitude,
+              iconPath: '../../static/startPoint_icon.png',
+              width: _this.markerHeight,
+              height: _this.markerHeight },
+            {
+              id: 'endPoint',
+              latitude: endPoint.latitude,
+              longitude: endPoint.longitude,
+              iconPath: '../../static/targetPoint_icon.png',
+              width: _this.markerHeight,
+              height: _this.markerHeight,
+              anchor: {
+                x: 0.5,
+                y: 1 },
+
+              callout: {
+                content: (targetInfo.title || '') + "\n \u8DDD\u79BB\uFF1A" + (distance || 0) + "\u7C73 | \u7EA6\u9700\u8981" + (duration || 0) + "\u5206\u949F\u5230\n\u5730\u5740\uFF1A" + (targetInfo.address || '') + "\n",
+                color: '#FFFFFF',
+                fontSize: 12,
+                borderRadius: 4,
+                borderWidth: 1,
+                bgColor: '#5e5c5c',
+                padding: '5',
+                display: 'ALWAYS' } }];
+
+
+            _this.routePolyline = [{
+              points: pl,
+              arrowLine: true,
+              colorList: ['#FFFFFF', '#2CA756'],
+              width: 6 }];
+
+            return resolve(route);
+          } else
+          {
+            return reject(false);
+          }
+        },
+        fail: function fail(error) {
+          console.error(error);
+          _this.showErrorToast(error);
+          return reject(error);
+        },
+        complete: function complete(res) {
+          _this.hideLoadingToast();
+          console.log(res);
+        } });
+
+    });
+  };
+  MapMixins = __decorate([
+  vue_property_decorator_1.Component({ name: 'MapMixins' })],
+  MapMixins);
+  return MapMixins;
+}(vue_property_decorator_1.Mixins(VueMixins_1["default"], vue_property_decorator_1.Vue));
+exports["default"] = MapMixins;
+;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 4:
+/*!*************************************************!*\
+  !*** E:/github项目demo/后台管理/Take-Taxi/pages.json ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ 55:
 /*!********************************************************!*\
   !*** E:/github项目demo/后台管理/Take-Taxi/services/index.js ***!
   \********************************************************/
@@ -10213,14 +10915,14 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });Object.defineProperty(exports, "OrderService", { enumerable: true, get: function get() {return _order.default;} });exports.mapApi = void 0;var _order = _interopRequireDefault(__webpack_require__(/*! ./order */ 32));
-var _mapApi = _interopRequireDefault(__webpack_require__(/*! ./mapApi */ 38));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });Object.defineProperty(exports, "OrderService", { enumerable: true, get: function get() {return _order.default;} });exports.mapApi = void 0;var _order = _interopRequireDefault(__webpack_require__(/*! ./order */ 56));
+var _mapApi = _interopRequireDefault(__webpack_require__(/*! ./mapApi */ 63));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 var mapApi = new _mapApi.default();exports.mapApi = mapApi;
 
 /***/ }),
 
-/***/ 32:
+/***/ 56:
 /*!********************************************************!*\
   !*** E:/github项目demo/后台管理/Take-Taxi/services/order.js ***!
   \********************************************************/
@@ -10228,21 +10930,56 @@ var mapApi = new _mapApi.default();exports.mapApi = mapApi;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _qs = _interopRequireDefault(__webpack_require__(/*! qs */ 33));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _requestHelper = __webpack_require__(/*! ./requestHelper */ 57);
+var _VueMixins = __webpack_require__(/*! ../mixins/VueMixins */ 22);
 
 var OrderService = {
   //获取order的列表
-  fetchOrderList: function fetchOrderList(params, urlParams) {
-    var url = "".concat(uni.getStorageSync('$apiServer'), "/api/OrderInfo/GetPageList");
+  fetchOrderList: function fetchOrderList() {var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;var vueContext = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;var urlParams = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
+    return _requestHelper.requestHelper.request('/api/OrderInfo/GetPageList', _VueMixins.MethodEnum.POST, params, vueContext, urlParams);
+  } };var _default =
+
+
+OrderService;exports.default = _default;
+
+/***/ }),
+
+/***/ 57:
+/*!****************************************************************!*\
+  !*** E:/github项目demo/后台管理/Take-Taxi/services/requestHelper.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.requestHelper = void 0;var _qs = _interopRequireDefault(__webpack_require__(/*! qs */ 132));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+
+var requestHelper = {
+  /**
+                       * axios请求
+                       * @param url 请求地址
+                       * @param method {METHOD} http method
+                       * @param params 请求参数
+                       * @param vueContext 当前vue对象
+                       * @param spinName 等待参数
+                       * @param config
+                       * @returns {Promise<AxiosResponse<T>>}
+                       */
+  request: function request() {var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';var method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : MethodEnum;var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};var vueContext = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : undefined;var urlParams = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;var spinName = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 'spinning';var config = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : {};
+    url = "".concat(uni.getStorageSync('$apiServer')).concat(url);
     if (urlParams) {
       var paramsStr = _qs.default.stringify(urlParams);
       url = "".concat(url, "?").concat(paramsStr);
     }
+
+    if (vueContext && spinName && vueContext[spinName] !== undefined) {
+      vueContext[spinName] = true;
+    }
     return new Promise(function (resolve, reject) {
       uni.request({
         url: url, //仅为示例，并非真实接口地址。
-        data: params,
-        method: 'POST',
+        data: _objectSpread({ params: params }, config),
+        method: method,
         success: function success(res) {var
           statusCode = res.statusCode,result = res.data.result;
           if (statusCode === 200) {
@@ -10250,706 +10987,23 @@ var OrderService = {
           } else {
             return reject();
           }
-        }, error: function error(_error) {
+        },
+        error: function error(_error) {
           return reject(_error);
+        },
+        complete: function complete() {
+          if (vueContext && spinName && vueContext[spinName] !== undefined) {
+            vueContext[spinName] = false;
+          }
         } });
 
     });
-  } };var _default =
-
-
-OrderService;exports.default = _default;
+  } };exports.requestHelper = requestHelper;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
-/***/ 33:
-/*!**************************************!*\
-  !*** ./node_modules/qs/lib/index.js ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var stringify = __webpack_require__(/*! ./stringify */ 34);
-var parse = __webpack_require__(/*! ./parse */ 37);
-var formats = __webpack_require__(/*! ./formats */ 36);
-
-module.exports = {
-    formats: formats,
-    parse: parse,
-    stringify: stringify
-};
-
-
-/***/ }),
-
-/***/ 34:
-/*!******************************************!*\
-  !*** ./node_modules/qs/lib/stringify.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(/*! ./utils */ 35);
-var formats = __webpack_require__(/*! ./formats */ 36);
-
-var arrayPrefixGenerators = {
-    brackets: function brackets(prefix) { // eslint-disable-line func-name-matching
-        return prefix + '[]';
-    },
-    indices: function indices(prefix, key) { // eslint-disable-line func-name-matching
-        return prefix + '[' + key + ']';
-    },
-    repeat: function repeat(prefix) { // eslint-disable-line func-name-matching
-        return prefix;
-    }
-};
-
-var toISO = Date.prototype.toISOString;
-
-var defaults = {
-    delimiter: '&',
-    encode: true,
-    encoder: utils.encode,
-    encodeValuesOnly: false,
-    serializeDate: function serializeDate(date) { // eslint-disable-line func-name-matching
-        return toISO.call(date);
-    },
-    skipNulls: false,
-    strictNullHandling: false
-};
-
-var stringify = function stringify( // eslint-disable-line func-name-matching
-    object,
-    prefix,
-    generateArrayPrefix,
-    strictNullHandling,
-    skipNulls,
-    encoder,
-    filter,
-    sort,
-    allowDots,
-    serializeDate,
-    formatter,
-    encodeValuesOnly
-) {
-    var obj = object;
-    if (typeof filter === 'function') {
-        obj = filter(prefix, obj);
-    } else if (obj instanceof Date) {
-        obj = serializeDate(obj);
-    } else if (obj === null) {
-        if (strictNullHandling) {
-            return encoder && !encodeValuesOnly ? encoder(prefix, defaults.encoder) : prefix;
-        }
-
-        obj = '';
-    }
-
-    if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || utils.isBuffer(obj)) {
-        if (encoder) {
-            var keyValue = encodeValuesOnly ? prefix : encoder(prefix, defaults.encoder);
-            return [formatter(keyValue) + '=' + formatter(encoder(obj, defaults.encoder))];
-        }
-        return [formatter(prefix) + '=' + formatter(String(obj))];
-    }
-
-    var values = [];
-
-    if (typeof obj === 'undefined') {
-        return values;
-    }
-
-    var objKeys;
-    if (Array.isArray(filter)) {
-        objKeys = filter;
-    } else {
-        var keys = Object.keys(obj);
-        objKeys = sort ? keys.sort(sort) : keys;
-    }
-
-    for (var i = 0; i < objKeys.length; ++i) {
-        var key = objKeys[i];
-
-        if (skipNulls && obj[key] === null) {
-            continue;
-        }
-
-        if (Array.isArray(obj)) {
-            values = values.concat(stringify(
-                obj[key],
-                generateArrayPrefix(prefix, key),
-                generateArrayPrefix,
-                strictNullHandling,
-                skipNulls,
-                encoder,
-                filter,
-                sort,
-                allowDots,
-                serializeDate,
-                formatter,
-                encodeValuesOnly
-            ));
-        } else {
-            values = values.concat(stringify(
-                obj[key],
-                prefix + (allowDots ? '.' + key : '[' + key + ']'),
-                generateArrayPrefix,
-                strictNullHandling,
-                skipNulls,
-                encoder,
-                filter,
-                sort,
-                allowDots,
-                serializeDate,
-                formatter,
-                encodeValuesOnly
-            ));
-        }
-    }
-
-    return values;
-};
-
-module.exports = function (object, opts) {
-    var obj = object;
-    var options = opts ? utils.assign({}, opts) : {};
-
-    if (options.encoder !== null && options.encoder !== undefined && typeof options.encoder !== 'function') {
-        throw new TypeError('Encoder has to be a function.');
-    }
-
-    var delimiter = typeof options.delimiter === 'undefined' ? defaults.delimiter : options.delimiter;
-    var strictNullHandling = typeof options.strictNullHandling === 'boolean' ? options.strictNullHandling : defaults.strictNullHandling;
-    var skipNulls = typeof options.skipNulls === 'boolean' ? options.skipNulls : defaults.skipNulls;
-    var encode = typeof options.encode === 'boolean' ? options.encode : defaults.encode;
-    var encoder = typeof options.encoder === 'function' ? options.encoder : defaults.encoder;
-    var sort = typeof options.sort === 'function' ? options.sort : null;
-    var allowDots = typeof options.allowDots === 'undefined' ? false : options.allowDots;
-    var serializeDate = typeof options.serializeDate === 'function' ? options.serializeDate : defaults.serializeDate;
-    var encodeValuesOnly = typeof options.encodeValuesOnly === 'boolean' ? options.encodeValuesOnly : defaults.encodeValuesOnly;
-    if (typeof options.format === 'undefined') {
-        options.format = formats['default'];
-    } else if (!Object.prototype.hasOwnProperty.call(formats.formatters, options.format)) {
-        throw new TypeError('Unknown format option provided.');
-    }
-    var formatter = formats.formatters[options.format];
-    var objKeys;
-    var filter;
-
-    if (typeof options.filter === 'function') {
-        filter = options.filter;
-        obj = filter('', obj);
-    } else if (Array.isArray(options.filter)) {
-        filter = options.filter;
-        objKeys = filter;
-    }
-
-    var keys = [];
-
-    if (typeof obj !== 'object' || obj === null) {
-        return '';
-    }
-
-    var arrayFormat;
-    if (options.arrayFormat in arrayPrefixGenerators) {
-        arrayFormat = options.arrayFormat;
-    } else if ('indices' in options) {
-        arrayFormat = options.indices ? 'indices' : 'repeat';
-    } else {
-        arrayFormat = 'indices';
-    }
-
-    var generateArrayPrefix = arrayPrefixGenerators[arrayFormat];
-
-    if (!objKeys) {
-        objKeys = Object.keys(obj);
-    }
-
-    if (sort) {
-        objKeys.sort(sort);
-    }
-
-    for (var i = 0; i < objKeys.length; ++i) {
-        var key = objKeys[i];
-
-        if (skipNulls && obj[key] === null) {
-            continue;
-        }
-
-        keys = keys.concat(stringify(
-            obj[key],
-            key,
-            generateArrayPrefix,
-            strictNullHandling,
-            skipNulls,
-            encode ? encoder : null,
-            filter,
-            sort,
-            allowDots,
-            serializeDate,
-            formatter,
-            encodeValuesOnly
-        ));
-    }
-
-    var joined = keys.join(delimiter);
-    var prefix = options.addQueryPrefix === true ? '?' : '';
-
-    return joined.length > 0 ? prefix + joined : '';
-};
-
-
-/***/ }),
-
-/***/ 35:
-/*!**************************************!*\
-  !*** ./node_modules/qs/lib/utils.js ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var has = Object.prototype.hasOwnProperty;
-
-var hexTable = (function () {
-    var array = [];
-    for (var i = 0; i < 256; ++i) {
-        array.push('%' + ((i < 16 ? '0' : '') + i.toString(16)).toUpperCase());
-    }
-
-    return array;
-}());
-
-var compactQueue = function compactQueue(queue) {
-    var obj;
-
-    while (queue.length) {
-        var item = queue.pop();
-        obj = item.obj[item.prop];
-
-        if (Array.isArray(obj)) {
-            var compacted = [];
-
-            for (var j = 0; j < obj.length; ++j) {
-                if (typeof obj[j] !== 'undefined') {
-                    compacted.push(obj[j]);
-                }
-            }
-
-            item.obj[item.prop] = compacted;
-        }
-    }
-
-    return obj;
-};
-
-var arrayToObject = function arrayToObject(source, options) {
-    var obj = options && options.plainObjects ? Object.create(null) : {};
-    for (var i = 0; i < source.length; ++i) {
-        if (typeof source[i] !== 'undefined') {
-            obj[i] = source[i];
-        }
-    }
-
-    return obj;
-};
-
-var merge = function merge(target, source, options) {
-    if (!source) {
-        return target;
-    }
-
-    if (typeof source !== 'object') {
-        if (Array.isArray(target)) {
-            target.push(source);
-        } else if (typeof target === 'object') {
-            if (options.plainObjects || options.allowPrototypes || !has.call(Object.prototype, source)) {
-                target[source] = true;
-            }
-        } else {
-            return [target, source];
-        }
-
-        return target;
-    }
-
-    if (typeof target !== 'object') {
-        return [target].concat(source);
-    }
-
-    var mergeTarget = target;
-    if (Array.isArray(target) && !Array.isArray(source)) {
-        mergeTarget = arrayToObject(target, options);
-    }
-
-    if (Array.isArray(target) && Array.isArray(source)) {
-        source.forEach(function (item, i) {
-            if (has.call(target, i)) {
-                if (target[i] && typeof target[i] === 'object') {
-                    target[i] = merge(target[i], item, options);
-                } else {
-                    target.push(item);
-                }
-            } else {
-                target[i] = item;
-            }
-        });
-        return target;
-    }
-
-    return Object.keys(source).reduce(function (acc, key) {
-        var value = source[key];
-
-        if (has.call(acc, key)) {
-            acc[key] = merge(acc[key], value, options);
-        } else {
-            acc[key] = value;
-        }
-        return acc;
-    }, mergeTarget);
-};
-
-var assign = function assignSingleSource(target, source) {
-    return Object.keys(source).reduce(function (acc, key) {
-        acc[key] = source[key];
-        return acc;
-    }, target);
-};
-
-var decode = function (str) {
-    try {
-        return decodeURIComponent(str.replace(/\+/g, ' '));
-    } catch (e) {
-        return str;
-    }
-};
-
-var encode = function encode(str) {
-    // This code was originally written by Brian White (mscdex) for the io.js core querystring library.
-    // It has been adapted here for stricter adherence to RFC 3986
-    if (str.length === 0) {
-        return str;
-    }
-
-    var string = typeof str === 'string' ? str : String(str);
-
-    var out = '';
-    for (var i = 0; i < string.length; ++i) {
-        var c = string.charCodeAt(i);
-
-        if (
-            c === 0x2D // -
-            || c === 0x2E // .
-            || c === 0x5F // _
-            || c === 0x7E // ~
-            || (c >= 0x30 && c <= 0x39) // 0-9
-            || (c >= 0x41 && c <= 0x5A) // a-z
-            || (c >= 0x61 && c <= 0x7A) // A-Z
-        ) {
-            out += string.charAt(i);
-            continue;
-        }
-
-        if (c < 0x80) {
-            out = out + hexTable[c];
-            continue;
-        }
-
-        if (c < 0x800) {
-            out = out + (hexTable[0xC0 | (c >> 6)] + hexTable[0x80 | (c & 0x3F)]);
-            continue;
-        }
-
-        if (c < 0xD800 || c >= 0xE000) {
-            out = out + (hexTable[0xE0 | (c >> 12)] + hexTable[0x80 | ((c >> 6) & 0x3F)] + hexTable[0x80 | (c & 0x3F)]);
-            continue;
-        }
-
-        i += 1;
-        c = 0x10000 + (((c & 0x3FF) << 10) | (string.charCodeAt(i) & 0x3FF));
-        out += hexTable[0xF0 | (c >> 18)]
-            + hexTable[0x80 | ((c >> 12) & 0x3F)]
-            + hexTable[0x80 | ((c >> 6) & 0x3F)]
-            + hexTable[0x80 | (c & 0x3F)];
-    }
-
-    return out;
-};
-
-var compact = function compact(value) {
-    var queue = [{ obj: { o: value }, prop: 'o' }];
-    var refs = [];
-
-    for (var i = 0; i < queue.length; ++i) {
-        var item = queue[i];
-        var obj = item.obj[item.prop];
-
-        var keys = Object.keys(obj);
-        for (var j = 0; j < keys.length; ++j) {
-            var key = keys[j];
-            var val = obj[key];
-            if (typeof val === 'object' && val !== null && refs.indexOf(val) === -1) {
-                queue.push({ obj: obj, prop: key });
-                refs.push(val);
-            }
-        }
-    }
-
-    return compactQueue(queue);
-};
-
-var isRegExp = function isRegExp(obj) {
-    return Object.prototype.toString.call(obj) === '[object RegExp]';
-};
-
-var isBuffer = function isBuffer(obj) {
-    if (obj === null || typeof obj === 'undefined') {
-        return false;
-    }
-
-    return !!(obj.constructor && obj.constructor.isBuffer && obj.constructor.isBuffer(obj));
-};
-
-module.exports = {
-    arrayToObject: arrayToObject,
-    assign: assign,
-    compact: compact,
-    decode: decode,
-    encode: encode,
-    isBuffer: isBuffer,
-    isRegExp: isRegExp,
-    merge: merge
-};
-
-
-/***/ }),
-
-/***/ 36:
-/*!****************************************!*\
-  !*** ./node_modules/qs/lib/formats.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var replace = String.prototype.replace;
-var percentTwenties = /%20/g;
-
-module.exports = {
-    'default': 'RFC3986',
-    formatters: {
-        RFC1738: function (value) {
-            return replace.call(value, percentTwenties, '+');
-        },
-        RFC3986: function (value) {
-            return value;
-        }
-    },
-    RFC1738: 'RFC1738',
-    RFC3986: 'RFC3986'
-};
-
-
-/***/ }),
-
-/***/ 37:
-/*!**************************************!*\
-  !*** ./node_modules/qs/lib/parse.js ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(/*! ./utils */ 35);
-
-var has = Object.prototype.hasOwnProperty;
-
-var defaults = {
-    allowDots: false,
-    allowPrototypes: false,
-    arrayLimit: 20,
-    decoder: utils.decode,
-    delimiter: '&',
-    depth: 5,
-    parameterLimit: 1000,
-    plainObjects: false,
-    strictNullHandling: false
-};
-
-var parseValues = function parseQueryStringValues(str, options) {
-    var obj = {};
-    var cleanStr = options.ignoreQueryPrefix ? str.replace(/^\?/, '') : str;
-    var limit = options.parameterLimit === Infinity ? undefined : options.parameterLimit;
-    var parts = cleanStr.split(options.delimiter, limit);
-
-    for (var i = 0; i < parts.length; ++i) {
-        var part = parts[i];
-
-        var bracketEqualsPos = part.indexOf(']=');
-        var pos = bracketEqualsPos === -1 ? part.indexOf('=') : bracketEqualsPos + 1;
-
-        var key, val;
-        if (pos === -1) {
-            key = options.decoder(part, defaults.decoder);
-            val = options.strictNullHandling ? null : '';
-        } else {
-            key = options.decoder(part.slice(0, pos), defaults.decoder);
-            val = options.decoder(part.slice(pos + 1), defaults.decoder);
-        }
-        if (has.call(obj, key)) {
-            obj[key] = [].concat(obj[key]).concat(val);
-        } else {
-            obj[key] = val;
-        }
-    }
-
-    return obj;
-};
-
-var parseObject = function (chain, val, options) {
-    var leaf = val;
-
-    for (var i = chain.length - 1; i >= 0; --i) {
-        var obj;
-        var root = chain[i];
-
-        if (root === '[]') {
-            obj = [];
-            obj = obj.concat(leaf);
-        } else {
-            obj = options.plainObjects ? Object.create(null) : {};
-            var cleanRoot = root.charAt(0) === '[' && root.charAt(root.length - 1) === ']' ? root.slice(1, -1) : root;
-            var index = parseInt(cleanRoot, 10);
-            if (
-                !isNaN(index)
-                && root !== cleanRoot
-                && String(index) === cleanRoot
-                && index >= 0
-                && (options.parseArrays && index <= options.arrayLimit)
-            ) {
-                obj = [];
-                obj[index] = leaf;
-            } else {
-                obj[cleanRoot] = leaf;
-            }
-        }
-
-        leaf = obj;
-    }
-
-    return leaf;
-};
-
-var parseKeys = function parseQueryStringKeys(givenKey, val, options) {
-    if (!givenKey) {
-        return;
-    }
-
-    // Transform dot notation to bracket notation
-    var key = options.allowDots ? givenKey.replace(/\.([^.[]+)/g, '[$1]') : givenKey;
-
-    // The regex chunks
-
-    var brackets = /(\[[^[\]]*])/;
-    var child = /(\[[^[\]]*])/g;
-
-    // Get the parent
-
-    var segment = brackets.exec(key);
-    var parent = segment ? key.slice(0, segment.index) : key;
-
-    // Stash the parent if it exists
-
-    var keys = [];
-    if (parent) {
-        // If we aren't using plain objects, optionally prefix keys
-        // that would overwrite object prototype properties
-        if (!options.plainObjects && has.call(Object.prototype, parent)) {
-            if (!options.allowPrototypes) {
-                return;
-            }
-        }
-
-        keys.push(parent);
-    }
-
-    // Loop through children appending to the array until we hit depth
-
-    var i = 0;
-    while ((segment = child.exec(key)) !== null && i < options.depth) {
-        i += 1;
-        if (!options.plainObjects && has.call(Object.prototype, segment[1].slice(1, -1))) {
-            if (!options.allowPrototypes) {
-                return;
-            }
-        }
-        keys.push(segment[1]);
-    }
-
-    // If there's a remainder, just add whatever is left
-
-    if (segment) {
-        keys.push('[' + key.slice(segment.index) + ']');
-    }
-
-    return parseObject(keys, val, options);
-};
-
-module.exports = function (str, opts) {
-    var options = opts ? utils.assign({}, opts) : {};
-
-    if (options.decoder !== null && options.decoder !== undefined && typeof options.decoder !== 'function') {
-        throw new TypeError('Decoder has to be a function.');
-    }
-
-    options.ignoreQueryPrefix = options.ignoreQueryPrefix === true;
-    options.delimiter = typeof options.delimiter === 'string' || utils.isRegExp(options.delimiter) ? options.delimiter : defaults.delimiter;
-    options.depth = typeof options.depth === 'number' ? options.depth : defaults.depth;
-    options.arrayLimit = typeof options.arrayLimit === 'number' ? options.arrayLimit : defaults.arrayLimit;
-    options.parseArrays = options.parseArrays !== false;
-    options.decoder = typeof options.decoder === 'function' ? options.decoder : defaults.decoder;
-    options.allowDots = typeof options.allowDots === 'boolean' ? options.allowDots : defaults.allowDots;
-    options.plainObjects = typeof options.plainObjects === 'boolean' ? options.plainObjects : defaults.plainObjects;
-    options.allowPrototypes = typeof options.allowPrototypes === 'boolean' ? options.allowPrototypes : defaults.allowPrototypes;
-    options.parameterLimit = typeof options.parameterLimit === 'number' ? options.parameterLimit : defaults.parameterLimit;
-    options.strictNullHandling = typeof options.strictNullHandling === 'boolean' ? options.strictNullHandling : defaults.strictNullHandling;
-
-    if (str === '' || str === null || typeof str === 'undefined') {
-        return options.plainObjects ? Object.create(null) : {};
-    }
-
-    var tempObj = typeof str === 'string' ? parseValues(str, options) : str;
-    var obj = options.plainObjects ? Object.create(null) : {};
-
-    // Iterate over the keys and setup the new object
-
-    var keys = Object.keys(tempObj);
-    for (var i = 0; i < keys.length; ++i) {
-        var key = keys[i];
-        var newObj = parseKeys(key, tempObj[key], options);
-        obj = utils.merge(obj, newObj, options);
-    }
-
-    return utils.compact(obj);
-};
-
-
-/***/ }),
-
-/***/ 38:
+/***/ 63:
 /*!*********************************************************!*\
   !*** E:/github项目demo/后台管理/Take-Taxi/services/mapApi.js ***!
   \*********************************************************/
@@ -11154,17 +11208,6 @@ MapApi = (_dec = (0, _vuePropertyDecorator.Component)({ name: 'MapApi' }), _dec(
     } }]);return MapApi;}((0, _vuePropertyDecorator.Mixins)(_VueMixins.default, _vuePropertyDecorator.Vue))) || _class);exports.default = MapApi;
 ;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-
-/***/ 4:
-/*!*************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/pages.json ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
 
 /***/ })
 

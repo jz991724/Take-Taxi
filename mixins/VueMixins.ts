@@ -14,6 +14,11 @@ export enum LoadMoreStatusEnum {
     noMore = '没有更多数据',
 }
 
+export enum MethodEnum {
+    GET = 'GET',
+    POST = 'POST'
+}
+
 @Component({
     name: 'VueMixins'
 })
