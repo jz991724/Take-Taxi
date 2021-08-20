@@ -17,9 +17,11 @@
     </scroll-view>
 
     <scroll-view scroll-y="true"
-                 :refresher-triggered="loading"
+                 :refresher-triggered="spinning"
                  @refresherpulling="onRefresh"
                  @scrolltolower="onFetchMoreData"
+                 @refresherrestore="onRestore"
+                 @refresherabort="onAbort"
                  :show-scrollbar="true"
                  :refresher-enabled="true"
                  :refresher-threshold="100"
@@ -35,26 +37,26 @@
             <view class="text-gray text-sm flex">
               <text class="margin-right-xs text-black" style="word-break: keep-all;">上车点：</text>
               <view class="text-cut">
-                {{ item.startPoint }}
+                {{ item.startAddress }}
               </view>
             </view>
             <view class="text-gray text-sm flex">
               <text class="margin-right-xs text-black" style="word-break: keep-all;">下车点：</text>
               <view class="text-cut">
-                {{ item.endPoint }}
+                {{ item.destinationAddress }}
               </view>
             </view>
             <view class="text-gray text-sm flex margin-top-xs">
               <text class="margin-right-xs" style="word-break: keep-all;">评价：</text>
               <!-- 只读状态 -->
-              <uni-rate :readonly="true" :value="item.score" :size="14"/>
+              <uni-rate :readonly="true" :disabled="!item.score" :value="item.score" :size="14"/>
             </view>
           </view>
 
           <view class="itemAction">
-            <view class="text-xs">{{ item.useCardTime }}</view>
-            <view v-if="item.useCardType" class="cu-tag bg-green light sm round">
-              {{ item.useCardType }}
+            <view class="text-xs">{{ item.useCarTime }}</view>
+            <view v-if="item.productType" class="cu-tag bg-green light sm round">
+              {{ item.productType }}
             </view>
           </view>
         </view>
@@ -106,8 +108,6 @@ export default class Order extends Mixins(VueMixins) {
     key: OrderStatusEnum.待接单
   }];
 
-  loading = false;
-
   onRefresh() {
     console.log('刷新');
     this.fetchData();
@@ -120,7 +120,7 @@ export default class Order extends Mixins(VueMixins) {
 
   onRestore() {
     console.log("onRestore");
-    // this.spinning = false;
+    this.spinning = false;
   }
 
   onAbort() {
@@ -149,7 +149,7 @@ export default class Order extends Mixins(VueMixins) {
 
   //获取数据
   fetchData(conditions = {driverPhone: '15808893828', status: this.activeTabKey}) {
-    if (this.loading) {
+    if (this.spinning) {
       return;
     }
     this.pagination.current = 1;
@@ -166,12 +166,9 @@ export default class Order extends Mixins(VueMixins) {
       isAsc: true,
       orderField: undefined,
     };
-    this.loading = true;
-
 
     OrderService.fetchOrderList(params, this, conditions)
         .then(({items}) => {
-          this.loading = false;
           this.allOrders = items || [];
           debugger
         });
