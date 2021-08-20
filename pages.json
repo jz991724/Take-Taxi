@@ -1,89 +1,88 @@
 {
-  "pages": [
-    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-    {
-      "path": "pages/Home/Home",
-      "style": {
-        "navigationBarTitleText": "主页",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/Mine/Mine",
-      "style": {
-        "navigationBarTitleText": "我的",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/Order/Order",
-      "style": {
-        "navigationBarTitleText": "订单",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/Home/Search/Search",
-      "style": {
-        "navigationBarTitleText": "搜索",
-        "enablePullDownRefresh": true
-      }
-    },
-    {
-      "path": "pages/Login/Login",
-      "style": {
-        "navigationBarTitleText": "登录",
-        "enablePullDownRefresh": false
-      }
-    }
-  ],
-  "tabBar": {
-    "color": "#7A7E83",
-    "selectedColor": "#007AFF",
-    "borderStyle": "black",
-    "backgroundColor": "#F8F8F8",
-    "list": [
-      {
-        "pagePath": "pages/Home/Home",
-        "iconPath": "static/home_icon.png",
-        "selectedIconPath": "static/home_active_icon.png",
-        "text": "主页"
-      },
-      {
-        "pagePath": "pages/Mine/Mine",
-        "iconPath": "static/mine_icon.png",
-        "selectedIconPath": "static/mine_active_icon.png",
-        "text": "我的"
-      }
-    ]
-  },
-  "globalStyle": {
-    "navigationStyle": "custom",
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
-  },
-  // 使用npm安装时，使用以下配置（配置完成后重新编译运行）
-  "easycom": {
-    "autoscan": true,
-    "custom": {
-      "tui-(.*)": "thorui-uni/lib/thorui/tui-$1/tui-$1.vue"
-    }
-  },
-  "condition": {
-    //模式配置，仅开发期间生效
-    "current": 0,
-    //当前激活的模式(list 的索引项)
-    "list": [
-      {
-        "name": "",
-        //模式名称
-        "path": "",
-        //启动页面，必选
-        "query": ""
-        //启动参数，在页面的onLoad函数里面得到
-      }
-    ]
-  }
+	"pages": [
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/Home/Home",
+			"style": {
+				"navigationBarTitleText": "主页",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/Mine/Mine",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/Order/Order",
+			"style": {
+				"navigationBarTitleText": "订单",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/Home/Search/Search",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/Login/Login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"enablePullDownRefresh": false
+			}
+		}
+	],
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#007AFF",
+		"borderStyle": "black",
+		"backgroundColor": "#F8F8F8",
+		"list": [{
+				"pagePath": "pages/Home/Home",
+				"iconPath": "static/home_icon.png",
+				"selectedIconPath": "static/home_active_icon.png",
+				"text": "主页"
+			},
+			{
+				"pagePath": "pages/Mine/Mine",
+				"iconPath": "static/mine_icon.png",
+				"selectedIconPath": "static/mine_active_icon.png",
+				"text": "我的"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationStyle": "custom",
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	// 使用npm安装时，使用以下配置（配置完成后重新编译运行）
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"tui-(.*)": "thorui-uni/lib/thorui/tui-$1/tui-$1.vue"
+			// uni-ui 规则如下配置
+			// "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+		}
+	},
+	"condition": {
+		//模式配置，仅开发期间生效
+		"current": 0,
+		//当前激活的模式(list 的索引项)
+		"list": [{
+			"name": "",
+			//模式名称
+			"path": "",
+			//启动页面，必选
+			"query": ""
+			//启动参数，在页面的onLoad函数里面得到
+		}]
+	}
 }

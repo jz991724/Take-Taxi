@@ -9775,6 +9775,14 @@ var MethodEnum;
   MethodEnum["GET"] = "GET";
   MethodEnum["POST"] = "POST";
 })(MethodEnum = exports.MethodEnum || (exports.MethodEnum = {}));
+var OrderStatusEnum;
+(function (OrderStatusEnum) {
+  OrderStatusEnum[OrderStatusEnum["\u5F85\u6D3E\u5355"] = 0] = "\u5F85\u6D3E\u5355";
+  OrderStatusEnum[OrderStatusEnum["\u5F85\u63A5\u5355"] = 1] = "\u5F85\u63A5\u5355";
+  OrderStatusEnum[OrderStatusEnum["\u8FDB\u884C\u4E2D"] = 2] = "\u8FDB\u884C\u4E2D";
+  OrderStatusEnum[OrderStatusEnum["\u5DF2\u7ED3\u675F"] = 3] = "\u5DF2\u7ED3\u675F";
+  OrderStatusEnum[OrderStatusEnum["\u5168\u90E8"] = null] = "\u5168\u90E8";
+})(OrderStatusEnum = exports.OrderStatusEnum || (exports.OrderStatusEnum = {}));
 var VueMixins = function (_super) {
   __extends(VueMixins, _super);
   function VueMixins() {
@@ -10226,30 +10234,7 @@ exports["default"] = MapMixins;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */
+/* 32 */
 /*!********************************************************!*\
   !*** E:/github项目demo/后台管理/Take-Taxi/services/index.js ***!
   \********************************************************/
@@ -10257,13 +10242,13 @@ exports["default"] = MapMixins;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });Object.defineProperty(exports, "OrderService", { enumerable: true, get: function get() {return _order.default;} });exports.mapApi = void 0;var _order = _interopRequireDefault(__webpack_require__(/*! ./order */ 56));
-var _mapApi = _interopRequireDefault(__webpack_require__(/*! ./mapApi */ 63));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });Object.defineProperty(exports, "OrderService", { enumerable: true, get: function get() {return _order.default;} });exports.mapApi = void 0;var _order = _interopRequireDefault(__webpack_require__(/*! ./order */ 33));
+var _mapApi = _interopRequireDefault(__webpack_require__(/*! ./mapApi */ 40));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 var mapApi = new _mapApi.default();exports.mapApi = mapApi;
 
 /***/ }),
-/* 56 */
+/* 33 */
 /*!********************************************************!*\
   !*** E:/github项目demo/后台管理/Take-Taxi/services/order.js ***!
   \********************************************************/
@@ -10271,7 +10256,7 @@ var mapApi = new _mapApi.default();exports.mapApi = mapApi;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _requestHelper = __webpack_require__(/*! ./requestHelper */ 57);
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _requestHelper = __webpack_require__(/*! ./requestHelper */ 34);
 var _VueMixins = __webpack_require__(/*! ../mixins/VueMixins */ 22);
 
 var OrderService = {
@@ -10284,7 +10269,7 @@ var OrderService = {
 OrderService;exports.default = _default;
 
 /***/ }),
-/* 57 */
+/* 34 */
 /*!****************************************************************!*\
   !*** E:/github项目demo/后台管理/Take-Taxi/services/requestHelper.js ***!
   \****************************************************************/
@@ -10292,7 +10277,7 @@ OrderService;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.requestHelper = void 0;var _qs = _interopRequireDefault(__webpack_require__(/*! qs */ 58));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.requestHelper = void 0;var _qs = _interopRequireDefault(__webpack_require__(/*! qs */ 35));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 var requestHelper = {
   /**
@@ -10344,7 +10329,7 @@ var requestHelper = {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 58 */
+/* 35 */
 /*!**************************************!*\
   !*** ./node_modules/qs/lib/index.js ***!
   \**************************************/
@@ -10354,9 +10339,9 @@ var requestHelper = {
 "use strict";
 
 
-var stringify = __webpack_require__(/*! ./stringify */ 59);
-var parse = __webpack_require__(/*! ./parse */ 62);
-var formats = __webpack_require__(/*! ./formats */ 61);
+var stringify = __webpack_require__(/*! ./stringify */ 36);
+var parse = __webpack_require__(/*! ./parse */ 39);
+var formats = __webpack_require__(/*! ./formats */ 38);
 
 module.exports = {
     formats: formats,
@@ -10366,7 +10351,7 @@ module.exports = {
 
 
 /***/ }),
-/* 59 */
+/* 36 */
 /*!******************************************!*\
   !*** ./node_modules/qs/lib/stringify.js ***!
   \******************************************/
@@ -10376,8 +10361,8 @@ module.exports = {
 "use strict";
 
 
-var utils = __webpack_require__(/*! ./utils */ 60);
-var formats = __webpack_require__(/*! ./formats */ 61);
+var utils = __webpack_require__(/*! ./utils */ 37);
+var formats = __webpack_require__(/*! ./formats */ 38);
 
 var arrayPrefixGenerators = {
     brackets: function brackets(prefix) { // eslint-disable-line func-name-matching
@@ -10587,7 +10572,7 @@ module.exports = function (object, opts) {
 
 
 /***/ }),
-/* 60 */
+/* 37 */
 /*!**************************************!*\
   !*** ./node_modules/qs/lib/utils.js ***!
   \**************************************/
@@ -10811,7 +10796,7 @@ module.exports = {
 
 
 /***/ }),
-/* 61 */
+/* 38 */
 /*!****************************************!*\
   !*** ./node_modules/qs/lib/formats.js ***!
   \****************************************/
@@ -10840,7 +10825,7 @@ module.exports = {
 
 
 /***/ }),
-/* 62 */
+/* 39 */
 /*!**************************************!*\
   !*** ./node_modules/qs/lib/parse.js ***!
   \**************************************/
@@ -10850,7 +10835,7 @@ module.exports = {
 "use strict";
 
 
-var utils = __webpack_require__(/*! ./utils */ 60);
+var utils = __webpack_require__(/*! ./utils */ 37);
 
 var has = Object.prototype.hasOwnProperty;
 
@@ -11025,7 +11010,7 @@ module.exports = function (str, opts) {
 
 
 /***/ }),
-/* 63 */
+/* 40 */
 /*!*********************************************************!*\
   !*** E:/github项目demo/后台管理/Take-Taxi/services/mapApi.js ***!
   \*********************************************************/

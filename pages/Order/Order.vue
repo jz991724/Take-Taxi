@@ -72,17 +72,8 @@ import {
   Mixins,
   Watch
 } from 'vue-property-decorator';
-import VueMixins, {LoadMoreStatusEnum} from '../../mixins/VueMixins';
+import VueMixins, {LoadMoreStatusEnum, OrderStatusEnum} from '../../mixins/VueMixins';
 import {OrderService} from '../../services'
-
-// order状态enum
-export enum OrderStatusEnum {
-  待派单,
-  待接单,
-  进行中,
-  已结束,
-  全部 = null
-}
 
 @Component({
   name: 'Order'
@@ -130,16 +121,6 @@ export default class Order extends Mixins(VueMixins) {
 
   //当前显示的订单
   allOrders = [];
-  // allOrders_temp = [{
-  //   id: '01',
-  //   status: OrderStatusEnum.进行中,
-  //   startPoint: '昆明市盘龙区人民政府昆明市盘龙区人民政府',
-  //   endPoint: '昆明市盘龙区金辰街道办事处',
-  //   useCardTime: '2021-07-23 10:00:23',
-  //   useCardType: '标准接机',
-  //   remark: '安排39座大巴车，9点40准时到达10点出发',
-  //   score: 4
-  // }];
 
   pagination = {
     current: 1,

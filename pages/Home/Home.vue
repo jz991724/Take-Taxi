@@ -63,7 +63,7 @@
             </uni-card>
 
 
-            <view v-if="userInfoList.length>0">
+            <view v-if="orderList.length>0">
               <view class="cu-bar bg-white solid-bottom margin-top">
                 <view class="action">
                   <text class="cuIcon-titles text-orange"></text>
@@ -71,26 +71,88 @@
                 </view>
               </view>
 
-              <uni-card v-for="userInfo in userInfoList"
+              <uni-card v-for="userInfo in orderList"
                         :key="userInfo.id"
                         :is-shadow="true"
                         mode="title"
                         note="true">
                 <template v-slot:header>
                   <view>
-                    <text class="text-bold margin-right-sm">{{ userInfo.name || '' }}</text>
-                    <view v-if="userInfo.useCardType" class="cu-tag bg-green light sm round">
-                      {{ userInfo.useCardType }}
+                    <text class="text-bold margin-right-sm">{{ userInfo.passengerName || '' }}</text>
+                    <view v-if="userInfo.productType" class="cu-tag bg-green light sm round">
+                      {{ userInfo.productType }}
                     </view>
                   </view>
-
-                  <text class="text-right">用车时间：{{ userInfo.useCardTime || '' }}</text>
                 </template>
 
-                <text>{{ userInfo.remark || '' }}</text>
+                <view>
+                  <uni-row v-if="userInfo.flightNumber">
+                    <uni-col :span="5">
+                      <view class="text-bold response text-right">航班号：</view>
+                    </uni-col>
+                    <uni-col :span="19">
+                      <view class="text-cut">
+                        {{ userInfo.flightNumber || '' }}
+                      </view>
+                    </uni-col>
+                  </uni-row>
+
+                  <uni-row v-if="userInfo.flightTime">
+                    <uni-col :span="5">
+                      <view class="text-bold response text-right">航班时间：</view>
+                    </uni-col>
+                    <uni-col :span="19">
+                      <view class="text-cut">
+                        {{ userInfo.flightTime || '' }}
+                      </view>
+                    </uni-col>
+                  </uni-row>
+
+                  <uni-row>
+                    <uni-col :span="5">
+                      <view class="text-bold response text-right">用车时间：</view>
+                    </uni-col>
+                    <uni-col :span="19">
+                      {{ `${userInfo.useCarDate || ''} ${userInfo.useCarTime || ''}` }}
+                    </uni-col>
+                  </uni-row>
+
+                  <uni-row>
+                    <uni-col :span="5">
+                      <view class="text-bold response text-right">乘车点：</view>
+                    </uni-col>
+                    <uni-col :span="19">
+                      <view class="text-cut">
+                        {{ userInfo.startAddress || '' }}
+                      </view>
+                    </uni-col>
+                  </uni-row>
+
+                  <uni-row>
+                    <uni-col :span="5">
+                      <view class="text-bold response text-right">目的地：</view>
+                    </uni-col>
+                    <uni-col :span="19">
+                      <view class="text-cut">
+                        {{ userInfo.destinationAddress || '' }}
+                      </view>
+                    </uni-col>
+                  </uni-row>
+
+                  <uni-row v-if="userInfo.remark">
+                    <uni-col :span="5">
+                      <view class="text-bold response text-right">备注：</view>
+                    </uni-col>
+                    <uni-col :span="19">
+                      <view class="text-cut">
+                        {{ userInfo.remark || '' }}
+                      </view>
+                    </uni-col>
+                  </uni-row>
+                </view>
 
                 <template v-slot:footer>
-                  <view class="text-center" @tap="onPhoneCall(userInfo.tel)">
+                  <view class="text-center" @tap="onPhoneCall(userInfo.passengerPhone)">
                     <uni-icons type="phone" size="14"></uni-icons>
                     <view>联系电话</view>
                   </view>
@@ -114,27 +176,43 @@
 
 <script lang="ts">
 import {Component, Mixins} from 'vue-property-decorator';
-import VueMixins from '../../mixins/VueMixins.ts';
+import VueMixins, {LoadMoreStatusEnum, OrderStatusEnum} from '../../mixins/VueMixins.ts';
 import UniIcons from '../../components/uni-icons/uni-icons.vue';
 import MapMixins from '../../mixins/MapMixins.ts';
+import {OrderService} from '../../services'
 
 @Component({
   name: 'Home',
   components: {UniIcons},
 })
 export default class Home extends Mixins(VueMixins, MapMixins) {
-  //乘客列表
-  userInfoList = [{
-    id: '01',
-    avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
-    name: '花姐夫',
-    tel: '18788409290',
-    // startPoint:''
-    endPoint: '昆明市盘龙区金辰街道办事处',
-    useCardTime: '2021-07-23 10:00:23',
-    useCardType: '标准接机',
-    remark: '安排39座大巴车，9点40准时到达10点出发'
-  }];
+  //乘客列表OrderList
+  orderList = [
+    // {
+    //   id: '01',
+    //   avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
+    //   name: '花姐夫',
+    //   tel: '18788409290',
+    //   // startPoint:''
+    //   endPoint: '昆明市盘龙区金辰街道办事处',
+    //   useCardTime: '2021-07-23 10:00:23',
+    //   useCardType: '标准接机',
+    //   remark: '安排39座大巴车，9点40准时到达10点出发'
+    // }
+  ];
+
+  //定位当前位置
+  locationCurrentPosition() {
+    this.getLocation()
+        .then(res => {
+          let {
+            latitude,
+            longitude
+          } = res;
+          this.latitude = latitude;
+          this.longitude = longitude;
+        });
+  }
 
   //跳到搜索页
   gotoSearchPage() {
@@ -167,7 +245,70 @@ export default class Home extends Mixins(VueMixins, MapMixins) {
     });
   };
 
+  //获取订单list
+  pagination = {
+    current: 1,
+    pageSize: 10,
+    // total: 0,
+  };
+
+  //获取数据
+  fetchOrderList(conditions = {driverPhone: '15808893828', status: OrderStatusEnum.全部}) {
+    if (this.spinning) {
+      return;
+    }
+    this.pagination.current = 1;
+    const {
+      pagination: {
+        current,
+        pageSize,
+      },
+    } = this;
+
+    const params = {
+      index: current || 1,
+      size: pageSize || 10,
+      isAsc: true,
+      orderField: undefined,
+    };
+
+    OrderService.fetchOrderList(params, this, conditions)
+        .then(({items}) => {
+          this.orderList = items || [];
+          debugger
+        });
+  }
+
+  //加载更多数据
+  fetchMoreOrders(conditions = {driverPhone: '15808893828', status: OrderStatusEnum.全部}) {
+    // this.loadMoreStatus = LoadMoreStatusEnum.more;
+
+    this.pagination.current += 1;
+    const {
+      pagination: {
+        current,
+        pageSize,
+      },
+    } = this;
+
+    const params = {
+      index: current || 1,
+      size: pageSize || 10,
+      isAsc: true,
+      orderField: undefined,
+    };
+
+    OrderService.fetchOrderList(params, this, conditions)
+        .then(({items}) => {
+          this.orderList = [...this.orderList, ...items];
+          // this.loadMoreStatus = LoadMoreStatusEnum.noMore;
+        });
+
+  }
+
   onLoad(option) {
+    this.fetchOrderList();
+
     this.planRoute = {
       'mode': 'DRIVING',
       'distance': 6431,
@@ -225,19 +366,6 @@ export default class Home extends Mixins(VueMixins, MapMixins) {
     // uni.$on('keywordsCompletionItems_map', ({keywordsCompletionItems}) => {
     //   this.keywordsCompletionItems = keywordsCompletionItems;
     // });
-  }
-
-  //定位当前位置
-  locationCurrentPosition() {
-    this.getLocation()
-        .then(res => {
-          let {
-            latitude,
-            longitude
-          } = res;
-          this.latitude = latitude;
-          this.longitude = longitude;
-        });
   }
 
   onReady() {

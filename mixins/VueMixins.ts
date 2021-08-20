@@ -19,6 +19,15 @@ export enum MethodEnum {
     POST = 'POST'
 }
 
+// order状态enum
+export enum OrderStatusEnum {
+    待派单,
+    待接单,
+    进行中,
+    已结束,
+    全部 = null
+}
+
 @Component({
     name: 'VueMixins'
 })
