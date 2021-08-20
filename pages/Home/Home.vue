@@ -87,10 +87,10 @@
 
                 <view>
                   <uni-row v-if="userInfo.flightNumber">
-                    <uni-col :span="5">
+                    <uni-col :span="7">
                       <view class="text-bold response text-right">航班号：</view>
                     </uni-col>
-                    <uni-col :span="19">
+                    <uni-col :span="17">
                       <view class="text-cut">
                         {{ userInfo.flightNumber || '' }}
                       </view>
@@ -98,10 +98,10 @@
                   </uni-row>
 
                   <uni-row v-if="userInfo.flightTime">
-                    <uni-col :span="5">
+                    <uni-col :span="7">
                       <view class="text-bold response text-right">航班时间：</view>
                     </uni-col>
-                    <uni-col :span="19">
+                    <uni-col :span="17">
                       <view class="text-cut">
                         {{ userInfo.flightTime || '' }}
                       </view>
@@ -109,19 +109,19 @@
                   </uni-row>
 
                   <uni-row>
-                    <uni-col :span="5">
+                    <uni-col :span="7">
                       <view class="text-bold response text-right">用车时间：</view>
                     </uni-col>
-                    <uni-col :span="19">
+                    <uni-col :span="17">
                       {{ `${userInfo.useCarDate || ''} ${userInfo.useCarTime || ''}` }}
                     </uni-col>
                   </uni-row>
 
                   <uni-row>
-                    <uni-col :span="5">
+                    <uni-col :span="7">
                       <view class="text-bold response text-right">乘车点：</view>
                     </uni-col>
-                    <uni-col :span="19">
+                    <uni-col :span="17">
                       <view class="text-cut">
                         {{ userInfo.startAddress || '' }}
                       </view>
@@ -129,10 +129,10 @@
                   </uni-row>
 
                   <uni-row>
-                    <uni-col :span="5">
+                    <uni-col :span="7">
                       <view class="text-bold response text-right">目的地：</view>
                     </uni-col>
-                    <uni-col :span="19">
+                    <uni-col :span="17">
                       <view class="text-cut">
                         {{ userInfo.destinationAddress || '' }}
                       </view>
@@ -140,10 +140,10 @@
                   </uni-row>
 
                   <uni-row v-if="userInfo.remark">
-                    <uni-col :span="5">
+                    <uni-col :span="7">
                       <view class="text-bold response text-right">备注：</view>
                     </uni-col>
-                    <uni-col :span="19">
+                    <uni-col :span="17">
                       <view class="text-cut">
                         {{ userInfo.remark || '' }}
                       </view>
