@@ -274,7 +274,7 @@ export default class Home extends Mixins(VueMixins, MapMixins) {
 
     OrderService.fetchOrderList(params, this, conditions)
         .then(({items}) => {
-          this.orderList = items || [];
+          this.orderList = [...items,...items,...items,...items,...items,...items] || [];
           debugger
         });
   }
