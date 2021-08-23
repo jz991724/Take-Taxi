@@ -71,93 +71,104 @@
                 </view>
               </view>
 
-              <uni-card v-for="userInfo in orderList"
-                        :key="userInfo.id"
-                        :is-shadow="true"
-                        mode="title"
-                        note="true">
-                <template v-slot:header>
-                  <view>
-                    <text class="text-bold margin-right-sm">{{ userInfo.passengerName || '' }}</text>
-                    <view v-if="userInfo.productType" class="cu-tag bg-green light sm round">
-                      {{ userInfo.productType }}
+              <scroll-view scroll-y="true"
+                           :refresher-triggered="spinning"
+                           @refresherpulling="onRefresh"
+                           @scrolltolower="onFetchMoreData"
+                           @refresherrestore="onRestore"
+                           @refresherabort="onAbort"
+                           :show-scrollbar="true"
+                           :refresher-enabled="true"
+                           :refresher-threshold="120"
+                           style="position: relative;top: 0;height: 177px;">
+                <uni-card v-for="userInfo in orderList"
+                          :key="userInfo.id"
+                          :is-shadow="true"
+                          mode="title"
+                          note="true">
+                  <template v-slot:header>
+                    <view>
+                      <text class="text-bold margin-right-sm">{{ userInfo.passengerName || '' }}</text>
+                      <view v-if="userInfo.productType" class="cu-tag bg-green light sm round">
+                        {{ userInfo.productType }}
+                      </view>
                     </view>
+                  </template>
+
+                  <view>
+                    <uni-row v-if="userInfo.flightNumber">
+                      <uni-col :span="7">
+                        <view class="text-bold response text-right">航班号：</view>
+                      </uni-col>
+                      <uni-col :span="17">
+                        <view class="text-cut">
+                          {{ userInfo.flightNumber || '' }}
+                        </view>
+                      </uni-col>
+                    </uni-row>
+
+                    <uni-row v-if="userInfo.flightTime">
+                      <uni-col :span="7">
+                        <view class="text-bold response text-right">航班时间：</view>
+                      </uni-col>
+                      <uni-col :span="17">
+                        <view class="text-cut">
+                          {{ userInfo.flightTime || '' }}
+                        </view>
+                      </uni-col>
+                    </uni-row>
+
+                    <uni-row>
+                      <uni-col :span="7">
+                        <view class="text-bold response text-right">用车时间：</view>
+                      </uni-col>
+                      <uni-col :span="17">
+                        {{ `${userInfo.useCarDate || ''} ${userInfo.useCarTime || ''}` }}
+                      </uni-col>
+                    </uni-row>
+
+                    <uni-row>
+                      <uni-col :span="7">
+                        <view class="text-bold response text-right">乘车点：</view>
+                      </uni-col>
+                      <uni-col :span="17">
+                        <view class="text-cut">
+                          {{ userInfo.startAddress || '' }}
+                        </view>
+                      </uni-col>
+                    </uni-row>
+
+                    <uni-row>
+                      <uni-col :span="7">
+                        <view class="text-bold response text-right">目的地：</view>
+                      </uni-col>
+                      <uni-col :span="17">
+                        <view class="text-cut">
+                          {{ userInfo.destinationAddress || '' }}
+                        </view>
+                      </uni-col>
+                    </uni-row>
+
+                    <uni-row v-if="userInfo.remark">
+                      <uni-col :span="7">
+                        <view class="text-bold response text-right">备注：</view>
+                      </uni-col>
+                      <uni-col :span="17">
+                        <view class="text-cut">
+                          {{ userInfo.remark || '' }}
+                        </view>
+                      </uni-col>
+                    </uni-row>
                   </view>
-                </template>
 
-                <view>
-                  <uni-row v-if="userInfo.flightNumber">
-                    <uni-col :span="7">
-                      <view class="text-bold response text-right">航班号：</view>
-                    </uni-col>
-                    <uni-col :span="17">
-                      <view class="text-cut">
-                        {{ userInfo.flightNumber || '' }}
-                      </view>
-                    </uni-col>
-                  </uni-row>
-
-                  <uni-row v-if="userInfo.flightTime">
-                    <uni-col :span="7">
-                      <view class="text-bold response text-right">航班时间：</view>
-                    </uni-col>
-                    <uni-col :span="17">
-                      <view class="text-cut">
-                        {{ userInfo.flightTime || '' }}
-                      </view>
-                    </uni-col>
-                  </uni-row>
-
-                  <uni-row>
-                    <uni-col :span="7">
-                      <view class="text-bold response text-right">用车时间：</view>
-                    </uni-col>
-                    <uni-col :span="17">
-                      {{ `${userInfo.useCarDate || ''} ${userInfo.useCarTime || ''}` }}
-                    </uni-col>
-                  </uni-row>
-
-                  <uni-row>
-                    <uni-col :span="7">
-                      <view class="text-bold response text-right">乘车点：</view>
-                    </uni-col>
-                    <uni-col :span="17">
-                      <view class="text-cut">
-                        {{ userInfo.startAddress || '' }}
-                      </view>
-                    </uni-col>
-                  </uni-row>
-
-                  <uni-row>
-                    <uni-col :span="7">
-                      <view class="text-bold response text-right">目的地：</view>
-                    </uni-col>
-                    <uni-col :span="17">
-                      <view class="text-cut">
-                        {{ userInfo.destinationAddress || '' }}
-                      </view>
-                    </uni-col>
-                  </uni-row>
-
-                  <uni-row v-if="userInfo.remark">
-                    <uni-col :span="7">
-                      <view class="text-bold response text-right">备注：</view>
-                    </uni-col>
-                    <uni-col :span="17">
-                      <view class="text-cut">
-                        {{ userInfo.remark || '' }}
-                      </view>
-                    </uni-col>
-                  </uni-row>
-                </view>
-
-                <template v-slot:footer>
-                  <view class="text-center" @tap="onPhoneCall(userInfo.passengerPhone)">
-                    <uni-icons type="phone" size="14"></uni-icons>
-                    <view>联系电话</view>
-                  </view>
-                </template>
-              </uni-card>
+                  <template v-slot:footer>
+                    <view class="text-center" @tap="onPhoneCall(userInfo.passengerPhone)">
+                      <uni-icons type="phone" size="14"></uni-icons>
+                      <view>联系电话</view>
+                    </view>
+                  </template>
+                </uni-card>
+              </scroll-view>
             </view>
           </view>
         </epx-panel>
@@ -274,15 +285,17 @@ export default class Home extends Mixins(VueMixins, MapMixins) {
 
     OrderService.fetchOrderList(params, this, conditions)
         .then(({items}) => {
-          this.orderList = [...items,...items,...items,...items,...items,...items] || [];
-          debugger
+          this.orderList = [...items, ...items, ...items, ...items, ...items, ...items] || [];
         });
   }
 
   //加载更多数据
   fetchMoreOrders(conditions = {driverPhone: '15808893828', status: OrderStatusEnum.全部}) {
     // this.loadMoreStatus = LoadMoreStatusEnum.more;
-
+    if (this.spinning) {
+      return;
+    }
+    debugger
     this.pagination.current += 1;
     const {
       pagination: {
@@ -304,6 +317,26 @@ export default class Home extends Mixins(VueMixins, MapMixins) {
           // this.loadMoreStatus = LoadMoreStatusEnum.noMore;
         });
 
+  }
+
+  onRefresh() {
+    console.log('刷新');
+    this.fetchOrderList();
+  }
+
+  onFetchMoreData() {
+    console.log("更多");
+    this.fetchMoreOrders();
+  }
+
+  onRestore() {
+    console.log("onRestore");
+    this.spinning = false;
+  }
+
+  onAbort() {
+    console.log("onAbort");
+    this.spinning = false;
   }
 
   onLoad(option) {

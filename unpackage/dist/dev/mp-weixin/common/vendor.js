@@ -876,7 +876,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7460,7 +7460,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7481,14 +7481,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7574,7 +7574,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"TakeTaxiDemo","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8012,9 +8012,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!*************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/pages.json ***!
-  \*************************************************/
+/*!***************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/pages.json ***!
+  \***************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -8155,9 +8155,9 @@ function normalizeComponent (
 
 /***/ }),
 /* 11 */
-/*!**********************************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/static/js/qqmap-wx-jssdk.min.js ***!
-  \**********************************************************************/
+/*!************************************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/static/js/qqmap-wx-jssdk.min.js ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -8165,9 +8165,9 @@ function _classCallCheck(instance, Constructor) {if (!(instance instanceof Const
 
 /***/ }),
 /* 12 */
-/*!*****************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/store/index.js ***!
-  \*****************************************************/
+/*!*******************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/store/index.js ***!
+  \*******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9734,9 +9734,9 @@ exports.mixins = mixins;
 
 /***/ }),
 /* 22 */
-/*!**********************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/mixins/VueMixins.ts ***!
-  \**********************************************************/
+/*!************************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/mixins/VueMixins.ts ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9871,9 +9871,9 @@ exports["default"] = VueMixins;
 /* 26 */,
 /* 27 */,
 /* 28 */
-/*!********************************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/components/uni-icons/icons.js ***!
-  \********************************************************************/
+/*!**********************************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/components/uni-icons/icons.js ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10014,9 +10014,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* 29 */,
 /* 30 */,
 /* 31 */
-/*!**********************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/mixins/MapMixins.ts ***!
-  \**********************************************************/
+/*!************************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/mixins/MapMixins.ts ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10235,9 +10235,9 @@ exports["default"] = MapMixins;
 
 /***/ }),
 /* 32 */
-/*!********************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/services/index.js ***!
-  \********************************************************/
+/*!**********************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/services/index.js ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10249,9 +10249,9 @@ var mapApi = new _mapApi.default();exports.mapApi = mapApi;
 
 /***/ }),
 /* 33 */
-/*!********************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/services/order.js ***!
-  \********************************************************/
+/*!**********************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/services/order.js ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10270,9 +10270,9 @@ OrderService;exports.default = _default;
 
 /***/ }),
 /* 34 */
-/*!****************************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/services/requestHelper.js ***!
-  \****************************************************************/
+/*!******************************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/services/requestHelper.js ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11011,9 +11011,9 @@ module.exports = function (str, opts) {
 
 /***/ }),
 /* 40 */
-/*!*********************************************************!*\
-  !*** E:/github项目demo/后台管理/Take-Taxi/services/mapApi.js ***!
-  \*********************************************************/
+/*!***********************************************!*\
+  !*** D:/私活项目/打车/Take-Taxi/services/mapApi.js ***!
+  \***********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

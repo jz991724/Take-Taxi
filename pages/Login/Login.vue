@@ -16,7 +16,9 @@
       授权登录
     </button>
 
-    <!--    <button open-type="getPhoneNumber" @getphonenumber="onGetPhoneNumber">唤起授权</button>-->
+    <!--    <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button>-->
+
+    <button open-type="getPhoneNumber" @getphonenumber="onGetPhoneNumber">唤起授权</button>
   </view>
 </template>
 
@@ -218,20 +220,22 @@ export default class Login extends Mixins(VueMixins) {
     return false;
   }
 
-  // onGetPhoneNumber(e) {
-  //   if (e.detail.errMsg == "getPhoneNumber:fail user deny") {       //用户决绝授权
-  //     debugger
-  //     //拒绝授权后弹出一些提示
-  //
-  //   } else {      //允许授权
-  //     debugger
-  //     console.log(e.detail.encryptedData)
-  //     e.detail.encryptedData      //加密的用户信息
-  //     e.detail.iv     //加密算法的初始向量  时要用到
-  //   }
-  // }
+  onGetPhoneNumber(e) {
+    debugger
+    if (e.detail.errMsg == "getPhoneNumber:fail user deny") {       //用户决绝授权
+      debugger
+      //拒绝授权后弹出一些提示
+
+    } else {      //允许授权
+      debugger
+      console.log(e.detail.encryptedData)
+      e.detail.encryptedData      //加密的用户信息
+      e.detail.iv     //加密算法的初始向量  时要用到
+    }
+  }
 
   onLoad(options) {
+    debugger
     // 接收跳转的参数
     this.pageOption = options;
     //默认加载
